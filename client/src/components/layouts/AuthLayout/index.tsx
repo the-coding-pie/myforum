@@ -4,23 +4,7 @@ import { Redirect } from "react-router";
 import { RootState } from "../../../app/store";
 
 import AuthBanner from "../../../assets/img/auth.jpg";
-import { AuthContent } from "./AuthContent";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: #ffffff;
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  & > .banner {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-`;
+import { AuthContent, AuthWrapper } from "./style";
 
 interface Props {
   title: string;
@@ -33,7 +17,7 @@ const AuthLayout: React.FC<Props> = ({ children, title }) => {
     return <Redirect to="/" />;
   }
   return (
-    <Wrapper>
+    <AuthWrapper>
       <img className="banner" src={AuthBanner} alt="auth banner" />
 
       <AuthContent>
@@ -43,7 +27,7 @@ const AuthLayout: React.FC<Props> = ({ children, title }) => {
           {children}
         </div>
       </AuthContent>
-    </Wrapper>
+    </AuthWrapper>
   );
 };
 
