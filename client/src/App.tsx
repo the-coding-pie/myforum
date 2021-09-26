@@ -12,6 +12,7 @@ const theme: DefaultTheme = {
   },
   colors: {
     bg: "#dae0e6",
+    primary: "#1384D7",
   },
   fontSize: {
     xs: "0.75rem",

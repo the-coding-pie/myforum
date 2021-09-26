@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.colors.bg};
     font-family: ${({ theme }) => theme.fonts.ibm};
     font-weight: 400;
+    color: #222222;
   }
 `;
 

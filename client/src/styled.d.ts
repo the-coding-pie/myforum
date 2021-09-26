@@ -7,6 +7,7 @@ declare module "styled-components" {
     };
     colors: {
       bg: string;
+      primary: string;
     };
     fontSize: {
       xs: string;

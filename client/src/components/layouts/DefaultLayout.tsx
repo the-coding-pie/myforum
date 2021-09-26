@@ -1,13 +1,12 @@
 import { Switch, Route } from "react-router";
-import Communities from "../../../pages/Communities";
-import Error404 from "../../../pages/Error404";
-import Home from "../../../pages/Home";
-import Navbar from "../../Navbar";
-import { DefaultContainer } from "./style";
+import Communities from "../../pages/Communities";
+import Error404 from "../../pages/Error404";
+import Home from "../../pages/Home";
+import Navbar from "../Navbar";
 
 const DefaultLayout = () => {
   return (
-    <DefaultContainer>
+    <div>
       <Navbar />
 
       <Switch>
@@ -25,7 +24,7 @@ const DefaultLayout = () => {
           <Error404 />
         </Route>
       </Switch>
-    </DefaultContainer>
+    </div>
   );
 };
 
