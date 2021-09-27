@@ -2,7 +2,7 @@ import { Switch, Route } from "react-router";
 import Communities from "../../../pages/Communities";
 import Error404 from "../../../pages/Error404";
 import Home from "../../../pages/Home";
-import Navbar from "../../Navbar";
+import Navbar from "../../Navbar/Navbar";
 
 const DefaultLayout = () => {
   return (

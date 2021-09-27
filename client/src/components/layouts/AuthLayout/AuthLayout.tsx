@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { RootState } from "../../../app/store";
 
 import AuthBanner from "../../../assets/img/auth.jpg";
-import { AuthContent, AuthWrapper } from "./style";
+import { AuthContent, AuthWrapper } from "./AuthLayout.style";
 
 interface Props {
   title: string;

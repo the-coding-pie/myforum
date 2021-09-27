@@ -1,18 +1,56 @@
-import AuthLayout from "../components/layouts/AuthLayout";
-import { Button } from "../components/shared/Button";
-import { InputBox } from "../components/shared/InputBox";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import AuthLayout from "../components/layouts/AuthLayout/AuthLayout";
+import { BottomText } from "../components/shared/BottomText.style";
+import { Button } from "../components/shared/Button.style";
+import { InputBox } from "../components/shared/InputBox.style";
 
 const Login = () => {
-  return <AuthLayout title="Log In">
-      <form>
-          <InputBox type="text" placeholder="Username" />
-          <InputBox type="password" placeholder="Password" />
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+  });
 
-          <Button>
-              Log In
-          </Button>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prevValue) => {
+      return {
+        ...prevValue,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  return (
+    <AuthLayout title="Log In">
+      <form onSubmit={handleSubmit}>
+        <InputBox
+          type="text"
+          placeholder="Username"
+          name="username"
+          onChange={handleChange}
+          value={inputs.username}
+        />
+        <InputBox
+          type="password"
+          placeholder="Password"
+          name="password"
+          onChange={handleChange}
+          value={inputs.password}
+        />
+
+        <Button>Log In</Button>
+
+        <BottomText>
+          New to MyForum? <Link to="/signup">Sign Up</Link>
+        </BottomText>
       </form>
-  </AuthLayout>;
+    </AuthLayout>
+  );
 };
 
 export default Login;

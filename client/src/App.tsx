@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import MainLayout from "./components/layouts/MainLayout";
+import MainLayout from "./components/layouts/MainLayout/MainLayout";
 
 const theme: DefaultTheme = {
   fonts: {
     ibm: "IBM Plex Sans, sans-serif",
+    robotoMono: "'Roboto Mono', monospace"
   },
   colors: {
     bg: "#dae0e6",

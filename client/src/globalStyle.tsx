@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 
 * {
     margin: 0;
@@ -25,6 +26,15 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${({ theme }) => theme.fonts.ibm};
     font-weight: 400;
     color: #222222;
+  }
+
+  button {
+    outline: none;
+    cursor: pointer;
+  }
+
+  ul {
+    list-style-type: none;
   }
 `;
 

@@ -8,6 +8,7 @@ export const Button = styled.button`
   padding: 0.8rem 1rem;
   font-weight: bold;
   cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSize.sm};
   outline: none;
   margin-bottom: 1rem;
   width: 100%;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import DefaultLayout from "../DefaultLayout";
+import DefaultLayout from "../DefaultLayout/DefaultLayout";
 
 const MainLayout = () => {
   // this layout is just for deciding whether to show admin panel or normal screen
