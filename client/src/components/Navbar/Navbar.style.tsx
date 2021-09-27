@@ -25,4 +25,46 @@ export const NavRight = styled.div`
   flex: 1 1;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+`;
+
+export const Buttons = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+    width: 100%;
+
+    :first-child {
+      margin-right: 0.5rem;
+    }
+  }
+`;
+
+export const NavLinks = styled.ul`
+  display: flex;
+  align-items: center;
+
+  li {
+    height: 100%;
+
+    a {
+      padding-bottom: 1rem;
+      text-decoration: none;
+      color: #818181;
+      margin-right: 0.8rem;
+      text-transform: uppercase;
+      font-size: ${({ theme }) => theme.fontSize.xs};
+      font-weight: 600;
+
+      :hover {
+        border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
+      }
+    }
+  }
 `;

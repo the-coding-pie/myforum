@@ -1,15 +1,22 @@
-import styled from "styled-components";
+import styled, { DefaultTheme, StyledComponent } from "styled-components";
 
-export const Button = styled.button`
-  background: ${({ theme }) => theme.colors.primary};
-  color: #ffffff;
-  border: none;
+interface Props {
+  light?: boolean;
+  sm?: boolean;
+}
+
+export const Button = styled.button<Props>`
+  background: ${({ theme, light }) =>
+    light ? "#ffffff" : theme.colors.primary};
+  color: ${({ theme, light }) => (light ? theme.colors.primary : "#ffffff")};
+
+  border: ${({ theme, light }) =>
+    light ? `1px solid ${theme.colors.primary}` : "none"};
   border-radius: 5rem;
-  padding: 0.8rem 1rem;
+  padding: ${({ sm }) => sm ? ".5rem 0.8rem" : "0.8rem 1rem"};
   font-weight: bold;
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSize.sm};
   outline: none;
-  margin-bottom: 1rem;
   width: 100%;
 `;

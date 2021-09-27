@@ -13,6 +13,10 @@ export const AuthWrapper = styled.div`
     object-fit: cover;
     object-position: center;
   }
+
+  button {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const AuthContent = styled.div`

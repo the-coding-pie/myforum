@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router";
-import Communities from "../../../pages/Communities";
+import Community from "../../../pages/Community/Community";
 import Error404 from "../../../pages/Error404";
-import Home from "../../../pages/Home";
+import Home from "../../../pages/Home/Home";
 import Navbar from "../../Navbar/Navbar";
 
 const DefaultLayout = () => {
@@ -16,8 +16,8 @@ const DefaultLayout = () => {
         </Route>
 
         {/* /communities */}
-        <Route exact path="/communities">
-          <Communities />
+        <Route exact path="/c/:name">
+          <Community />
         </Route>
 
         <Route path="*">

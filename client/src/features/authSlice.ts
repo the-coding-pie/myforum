@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserObj } from "../types";
 import { getTokens } from "../utils/helpers";
 
 interface Tokens {
@@ -9,12 +10,12 @@ interface Tokens {
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
-  user: Object | null;
+  user: UserObj | null;
 }
 
 const initialState: AuthState = {
-  accessToken: "sdafds", // getTokens().access_token,
-  refreshToken: "sdafds", // getTokens().refresh_token,
+  accessToken: "null", // getTokens().access_token,
+  refreshToken: "null", // getTokens().refresh_token,
   user: null,
 };
 

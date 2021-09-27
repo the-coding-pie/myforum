@@ -1,7 +1,6 @@
 import { DefaultTheme, ThemeProvider } from "styled-components";
 import GlobalStyle from "./globalStyle";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MainLayout from "./components/layouts/MainLayout/MainLayout";
@@ -39,9 +38,9 @@ const App = () => {
             <Signup />
           </Route>
 
-          <PrivateRoute path="*">
+          <Route path="*">
             <MainLayout />
-          </PrivateRoute>
+          </Route>
         </Switch>
       </ThemeProvider>
     </Router>
