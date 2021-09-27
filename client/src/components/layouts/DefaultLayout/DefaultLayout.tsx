@@ -2,6 +2,8 @@ import { Switch, Route } from "react-router";
 import Community from "../../../pages/Community/Community";
 import Error404 from "../../../pages/Error404";
 import Home from "../../../pages/Home/Home";
+import PostDetail from "../../../pages/PostDetail/PostDetail";
+import User from "../../../pages/User/User";
 import Navbar from "../../Navbar/Navbar";
 
 const DefaultLayout = () => {
@@ -15,9 +17,19 @@ const DefaultLayout = () => {
           <Home />
         </Route>
 
-        {/* /communities */}
+        {/* /c/:name */}
         <Route exact path="/c/:name">
           <Community />
+        </Route>
+
+        {/* /u/:username */}
+        <Route exact path="/u/:username">
+          <User />
+        </Route>
+
+         {/* /posts/:id */}
+         <Route exact path="/posts/:id">
+          <PostDetail />
         </Route>
 
         <Route path="*">

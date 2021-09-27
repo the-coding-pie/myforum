@@ -66,5 +66,9 @@ export const NavLinks = styled.ul`
         border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
       }
     }
+
+    a.active {
+      border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
+    }
   }
 `;
