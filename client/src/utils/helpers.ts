@@ -59,3 +59,12 @@ export const removeTokens = (): void => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 };
+
+// isValid fn
+export const isValid = (errors: Object): boolean => {
+  let valid = true;
+
+  Object.values(errors).forEach((error) => error.length > 0 && (valid = false));
+
+  return valid;
+};

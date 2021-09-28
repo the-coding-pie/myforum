@@ -3,8 +3,8 @@ import { UserObj } from "../types";
 import { getTokens } from "../utils/helpers";
 
 interface Tokens {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 interface AuthState {
@@ -14,8 +14,8 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  accessToken: "null", // getTokens().access_token,
-  refreshToken: "null", // getTokens().refresh_token,
+  accessToken: getTokens().access_token,
+  refreshToken: getTokens().refresh_token,
   user: null,
 };
 
@@ -24,19 +24,25 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action: PayloadAction<Tokens>) => {
-      state.accessToken = action.payload.accessToken;
-      state.accessToken = action.payload.refreshToken;
+      state.accessToken = action.payload.access_token;
+      state.refreshToken = action.payload.refresh_token;
     },
     logoutUser: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
       state.user = null;
     },
+    setAccessToken: (
+      state,
+      action: PayloadAction<{ access_token: string }>
+    ) => {
+      state.accessToken = action.payload.access_token;
+    },
   },
 });
 
 // action creators
-export const { loginUser, logoutUser } = authSlice.actions;
+export const { loginUser, logoutUser, setAccessToken } = authSlice.actions;
 
 // reducer
 export default authSlice.reducer;

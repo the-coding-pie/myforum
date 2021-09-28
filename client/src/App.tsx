@@ -4,11 +4,15 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MainLayout from "./components/layouts/MainLayout/MainLayout";
+import axios from "axios";
+import { setAccessToken } from "./features/authSlice";
+import store from "./app/store";
+import { BASE_URL } from "./types/constants";
 
 const theme: DefaultTheme = {
   fonts: {
     ibm: "IBM Plex Sans, sans-serif",
-    robotoMono: "'Roboto Mono', monospace"
+    robotoMono: "'Roboto Mono', monospace",
   },
   colors: {
     bg: "#dae0e6",
@@ -23,6 +27,48 @@ const theme: DefaultTheme = {
     dxl: "1.5rem",
   },
 };
+
+let isFirst = true;
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const originalRequest = error.config;
+    // try to refresh the token for one time and it is not login route
+
+    if (
+      isFirst &&
+      error.response.status === 401 &&
+      !originalRequest.url.includes("login")
+    ) {
+      isFirst = false;
+
+      // try to get a new access_token
+      return axios
+        .post(`${BASE_URL}/auth/refresh`, {
+          refresh_token: store.getState().auth.refreshToken,
+        })
+        .then((response) => {
+          // get the access_token
+          const { access_token } = response.data.data;
+
+          store.dispatch(setAccessToken(access_token));
+
+          originalRequest.headers["Authorization"] = "Bearer " + access_token;
+
+          // user can again request for refresh_token
+          isFirst = true;
+
+          // retry the original request
+          return axios(originalRequest);
+        });
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 const App = () => {
   return (
