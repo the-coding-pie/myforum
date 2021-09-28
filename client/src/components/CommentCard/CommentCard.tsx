@@ -1,12 +1,23 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { CommentCardTop, CommentCardWrapper } from "./CommentCard.style";
 
-import React from 'react'
-
-const CommentCard = () => {
-    return (
-        <div>
-            heo
-        </div>
-    )
+interface Props {
+  username: string;
+  datePosted: string;
+  comment: string;
 }
 
-export default CommentCard
+const CommentCard = ({ username, datePosted, comment }: Props) => {
+  return (
+    <CommentCardWrapper>
+      <CommentCardTop>
+        <Link to={`/${username}`}>{username}</Link>
+        <time>{datePosted}</time>
+      </CommentCardTop>
+      <p>{comment}</p>
+    </CommentCardWrapper>
+  );
+};
+
+export default CommentCard;

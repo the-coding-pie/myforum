@@ -9,6 +9,10 @@ export const SearchBoxWrapper = styled.div`
   color: #707070;
   width: 350px;
 
+  form {
+    width: 100%;
+  }
+
   & svg {
     width: 1rem;
     margin-right: 0.3rem;

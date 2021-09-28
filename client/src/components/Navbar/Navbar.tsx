@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import Logo from "./Logo/Logo";
-import SearchBox from "./SearchBox/SearchBox";
+import Logo from "../Logo/Logo";
+import SearchBox from "../SearchBox/SearchBox";
 import {
   Buttons,
   NavbarWrapper,
@@ -9,13 +9,15 @@ import {
   NavLinks,
   NavRight,
 } from "./Navbar.style";
-import CreateButton from "./CreateButton/CreateButton";
-import { useSelector } from "react-redux";
+import CreateButton from "../CreateButton/CreateButton";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Button } from "../shared/Button.style";
+import { logoutUser } from "../../features/authSlice";
 
 const Navbar = () => {
   const { refreshToken, user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
 
   return (
     <NavbarWrapper>
@@ -31,8 +33,19 @@ const Navbar = () => {
               <CreateButton />
 
               <NavLinks>
-                <li><NavLink to={`/u/thecodingpie`}>theCodingpie</NavLink></li>
-                <li><NavLink to={`/logout`}>Logout</NavLink></li>
+                <li>
+                  <NavLink to={`/u/thecodingpie`}>theCodingpie</NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/logout"
+                    onClick={(e) => {
+                      dispatch(logoutUser);
+                    }}
+                  >
+                    Logout
+                  </NavLink>
+                </li>
               </NavLinks>
             </>
           ) : (

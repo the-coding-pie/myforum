@@ -1,11 +1,12 @@
 
 import React from 'react'
+import { GridLayoutWrapper } from '../components/shared/GridLayout.style'
 
 const Error404 = () => {
     return (
-        <div>
+        <GridLayoutWrapper>
             Error404
-        </div>
+        </GridLayoutWrapper>
     )
 }
 

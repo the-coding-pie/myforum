@@ -1,8 +1,30 @@
 import CommentBox from "../../components/CommentBox/CommentBox";
+import CommentCard from "../../components/CommentCard/CommentCard";
 import PostCard from "../../components/PostCard/PostCard";
 import PostCommunityCard from "../../components/PostCommunityCard/PostCommunityCard";
 import { GridLayoutWrapper } from "../../components/shared/GridLayout.style";
 import posts from "../../posts.json";
+
+const comments = [
+  {
+    id: 1,
+    username: "u/thecodingpie",
+    datePosted: "22 hrs ago",
+    comment: "lasdfjlas aslkdfjalksdfj lasdjfalskdfjasldfasdf asdf"
+  },
+  {
+    id: 2,
+    username: "u/thecodingpie",
+    datePosted: "22 hrs ago",
+    comment: "lasdfjlas aslkdfjalksdfj lasdjfalskdfjasldfasdf asdf"
+  },
+  {
+    id: 3,
+    username: "u/thecodingpie",
+    datePosted: "22 hrs ago",
+    comment: "lasdfjlas aslkdfjalksdfj lasdjfalskdfjasldfasdf asdf"
+  }
+]
 
 const PostDetail = () => {
   return (
@@ -12,6 +34,8 @@ const PostDetail = () => {
           <>
             <PostCard {...posts[0]} />
             <CommentBox />
+
+            {comments.length > 0 && comments.map(c => <CommentCard {...c} />)}
           </>
         ) : (
           <p>Oops, no posts found!</p>

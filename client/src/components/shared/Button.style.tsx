@@ -13,7 +13,7 @@ export const Button = styled.button<Props>`
   border: ${({ theme, light }) =>
     light ? `1px solid ${theme.colors.primary}` : "none"};
   border-radius: 5rem;
-  padding: ${({ sm }) => sm ? ".5rem 0.8rem" : "0.8rem 1rem"};
+  padding: ${({ sm }) => sm ? ".6rem 0.8rem" : "0.8rem 1rem"};
   font-weight: bold;
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSize.sm};
