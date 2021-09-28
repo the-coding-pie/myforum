@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import rootRouter from "./routes";
 import { BASE_PATH } from "./config/constants";
 import { connectDB } from "./config/db";
+import cors from "cors";
 
 // dotenv config
 dotenv.config();
@@ -14,6 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // middlewares
+app.use(cors());
 // parse JSON bodies
 app.use(express.json());
 
