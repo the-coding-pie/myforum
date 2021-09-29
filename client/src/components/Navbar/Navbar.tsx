@@ -33,9 +33,9 @@ const Navbar = () => {
               <CreateButton />
 
               <NavLinks>
-                <li>
-                  <NavLink to={`/u/thecodingpie`}>theCodingpie</NavLink>
-                </li>
+               {user &&  <li>
+                  <NavLink to={`/u/${user.username}`}>{user.username}</NavLink>
+                </li>}
                 <li>
                   <NavLink
                     to="/logout"

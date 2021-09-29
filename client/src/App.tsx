@@ -8,6 +8,9 @@ import axios from "axios";
 import { setAccessToken } from "./features/authSlice";
 import store from "./app/store";
 import { BASE_URL } from "./types/constants";
+import Toasts from "./components/Toasts/Toasts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme: DefaultTheme = {
   fonts: {
@@ -72,24 +75,29 @@ axios.interceptors.response.use(
 
 const App = () => {
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
+    <div>
+      <Toasts />
+      <ToastContainer position="bottom-left" />
 
-        <Switch>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/signup">
-            <Signup />
-          </Route>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
 
-          <Route path="*">
-            <MainLayout />
-          </Route>
-        </Switch>
-      </ThemeProvider>
-    </Router>
+          <Switch>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/signup">
+              <Signup />
+            </Route>
+
+            <Route path="*">
+              <MainLayout />
+            </Route>
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    </div>
   );
 };
 

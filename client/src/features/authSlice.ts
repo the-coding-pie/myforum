@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserObj } from "../types";
-import { getTokens } from "../utils/helpers";
+import { getTokens, saveAccessTokens, saveTokens } from "../utils/helpers";
 
 interface Tokens {
   access_token: string;
@@ -24,8 +24,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action: PayloadAction<Tokens>) => {
-      state.accessToken = action.payload.access_token;
-      state.refreshToken = action.payload.refresh_token;
+      const { access_token, refresh_token } = action.payload;
+
+      saveTokens(access_token, refresh_token);
+
+      state.accessToken = access_token;
+      state.refreshToken = refresh_token;
     },
     logoutUser: (state) => {
       state.accessToken = null;
@@ -36,13 +40,18 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ access_token: string }>
     ) => {
+      saveAccessTokens(action.payload.access_token);
+
       state.accessToken = action.payload.access_token;
+    },
+    setCurrentUser: (state, action: PayloadAction<UserObj>) => {
+      state.user = action.payload;
     },
   },
 });
 
 // action creators
-export const { loginUser, logoutUser, setAccessToken } = authSlice.actions;
+export const { loginUser, logoutUser, setAccessToken, setCurrentUser } = authSlice.actions;
 
 // reducer
 export default authSlice.reducer;
