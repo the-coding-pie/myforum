@@ -4,9 +4,9 @@ import Community from "../models/community";
 export const getCommunities = async (req, res) => {
   try {
     const communities = await Community.find({}).populate({
-        path: "admin",
-        select: "username"
-    })
+      path: "admin",
+      select: "username",
+    });
 
     res.send({
       success: true,
@@ -29,7 +29,7 @@ export const getCommunities = async (req, res) => {
 // POST /communities
 export const createCommunity = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, about } = req.body;
 
     // validation
     if (!name) {
@@ -63,7 +63,7 @@ export const createCommunity = async (req, res) => {
     }
 
     // create a new community
-    const newCommunity = await Community({ name, admin: req.user._id });
+    const newCommunity = await Community({ name, admin: req.user._id, about });
     await newCommunity.save();
 
     res.status(201).send({
