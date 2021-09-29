@@ -8,28 +8,7 @@ interface ToastState {
 }
 
 const initialState: ToastState = {
-  toasts: [
-    {
-      kind: ERROR,
-      msg: "Ooah, Papa never loved me and she is loving someone else so deeply for a very long time",
-    },
-    {
-      kind: ERROR,
-      msg: "Ooah, Papa never loved me and she is loving someone else so deeply for a very long time",
-    },
-    {
-      kind: DEFAULT,
-      msg: "Ooah, Papa left me and she is loving someone else so deeply for a very long time",
-    },
-    {
-      kind: SUCCESS,
-      msg: "Ooah, Papa left me and she is loving someone else so deeply for a very long time",
-    },
-    {
-      kind: WARNING,
-      msg: "Ooah, Papa left me and she is loving someone else so deeply for a very long time",
-    },
-  ],
+  toasts: [],
 };
 
 const toastSlice = createSlice({
@@ -38,12 +17,20 @@ const toastSlice = createSlice({
   reducers: {
     addToast: (state, action: PayloadAction<ToastObj>) => {
       // if the new toast already doesn't exists on the array, then only include it
-      if (!state.toasts.includes(action.payload, 0)) {
+      let contains = false;
+
+      state.toasts.forEach((t) => {
+        if (_.isEqual(t, action.payload)) {
+          contains = true;
+        }
+      });
+
+      if (!contains) {
         state.toasts.push(action.payload);
       }
     },
     removeToast: (state, action: PayloadAction<ToastObj>) => {
-      state.toasts.filter((t) => !_.isEqual(t, action.payload));
+      state.toasts = state.toasts.filter((t) => !_.isEqual(t, action.payload));
     },
     emptyToasts: (state) => {
       state.toasts = [];

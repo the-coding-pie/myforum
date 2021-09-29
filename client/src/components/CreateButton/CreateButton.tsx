@@ -1,19 +1,10 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToast } from "../../features/toastSlice";
-import { ERROR } from "../../types/constants";
 import { CreateButtonWrapper } from "./CreateButton.style";
 
 const CreateButton = () => {
-  const dispatch = useDispatch();
-
   return (
-    <CreateButtonWrapper onClick={() => {
-      dispatch(addToast({
-        kind: ERROR,
-        msg: "Samde ee"
-      }))
-    }}>
+    <CreateButtonWrapper>
       <Link to="/create">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -91,11 +91,11 @@ export const registerUser = async (req, res) => {
     const userWithEmail = await User.findOne({ email });
 
     if (userWithUsername || userWithEmail) {
-      return res.status(400).send({
+      return res.status(409).send({
         success: false,
         data: {},
         message: "User with that username or email already exists",
-        statusCode: 400,
+        statusCode: 409,
       });
     }
 
@@ -105,10 +105,7 @@ export const registerUser = async (req, res) => {
 
     res.status(201).send({
       success: true,
-      data: {
-        username: newUser.username,
-        email: newUser.email,
-      },
+      data: {},
       message: "New User has been created successfully. Log in to continue.",
       statusCode: 201,
     });

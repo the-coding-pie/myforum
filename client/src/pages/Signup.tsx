@@ -60,8 +60,9 @@ const Signup = () => {
             const data = response.data;
 
             switch (response.status) {
-              // bad request
+              // bad request or Invalid format or conflict
               case 400:
+              case 409:
                 setErrors((prevValue) => {
                   return {
                     ...prevValue,

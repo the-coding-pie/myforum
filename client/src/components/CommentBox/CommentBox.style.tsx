@@ -9,9 +9,9 @@ export const CommentBoxWrapper = styled.div`
 
   textarea {
     width: 100%;
+    height: 10rem;
     resize: none;
     max-width: 100%;
-    max-height: 10rem;
     border: 1px solid #ccc;
     outline: none;
     padding: 1rem;

@@ -63,15 +63,8 @@ const Login = () => {
           const data = response.data;
 
           switch (response.status) {
-            // bad request
+            // bad request or invalid format or unauthorized
             case 400:
-              setErrors((prevValue) => {
-                return {
-                  ...prevValue,
-                  common: data.message,
-                };
-              });
-              break;
             case 401:
               setErrors((prevValue) => {
                 return {
