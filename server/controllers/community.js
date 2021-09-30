@@ -9,7 +9,7 @@ export const getCommunities = async (req, res) => {
     //   path: "admin",
     //   select: "username",
     // });
-    const communities = await Community.find({}).select("_id name");
+    const communities = await Community.find({}).select("_id name").sort({ subscribers: -1 });
 
     res.send({
       success: true,
@@ -126,7 +126,7 @@ export const updateSubscribers = async (req, res) => {
       community.subscribers = community.subscribers.filter((s) => {
         return !_.isEqual(s._id, mongoose.Types.ObjectId(req.user._id));
       });
-      community.save();
+      await community.save();
 
       return res.send({
         success: true,
@@ -138,7 +138,7 @@ export const updateSubscribers = async (req, res) => {
 
     // string will automatically get converted to ObjectId for ref in mongoose
     community.subscribers.push(req.user._id);
-    community.save();
+    await community.save();
 
     res.send({
       success: true,

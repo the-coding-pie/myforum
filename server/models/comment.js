@@ -4,11 +4,16 @@ const commentSchema = new mongoose.Schema({
   comment: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   commentator: {
     type: mongoose.ObjectId,
     ref: "User",
+    required: true,
+  },
+  post: {
+    type: mongoose.ObjectId,
+    ref: "Post",
     required: true,
   },
   postedAt: {
@@ -17,6 +22,6 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
-const Comment = mongoose.model("Comment", commentShcema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 export default Comment;

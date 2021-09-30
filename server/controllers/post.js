@@ -140,7 +140,7 @@ export const createPost = async (req, res) => {
       community: foundCommunity,
       author: req.user._id,
     });
-    newPost.save();
+    await newPost.save();
 
     return res.status(201).send({
       success: false,
