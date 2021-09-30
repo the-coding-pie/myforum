@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Community from "../models/community";
+import * as _ from "lodash";
 
 // GET /communities
 export const getCommunities = async (req, res) => {
@@ -71,6 +73,77 @@ export const createCommunity = async (req, res) => {
       data: {},
       message: "New Community has been created successfully",
       statusCode: 201,
+    });
+  } catch {
+    res.status(500).send({
+      success: false,
+      data: {},
+      message: "Oops, something went wrong!",
+      statusCode: 500,
+    });
+  }
+};
+
+// PUT /communities/:name/subscribers
+export const updateSubscribers = async (req, res) => {
+  try {
+    const name = req.params.name.trim();
+
+    if (!name) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Community name is required",
+        statusCode: 400,
+      });
+    }
+
+    if (!name.match(/^[A-Za-z0-9_-]*$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid community name",
+        statusCode: 400,
+      });
+    }
+
+    // find the community
+    const community = await Community.findOne({ name });
+
+    // if no community found
+    if (!community) {
+      return res.status(404).send({
+        success: false,
+        data: {},
+        message: "Community doesn't exists",
+        statusCode: 404,
+      });
+    }
+
+    // add/remove subscriber
+    if (community.subscribers.includes(mongoose.Types.ObjectId(req.user._id))) {
+      community.subscribers = community.subscribers.filter((s) => {
+        return !_.isEqual(s._id, mongoose.Types.ObjectId(req.user._id));
+      });
+      community.save();
+
+      return res.send({
+        success: true,
+        data: {},
+        message: "Subscriber removed",
+        statusCode: 200,
+      });
+    }
+
+    // string will automatically get converted to ObjectId for ref in mongoose
+    community.subscribers.push(req.user._id);
+    community.save();
+
+    res.send({
+      success: true,
+      data: {},
+      message: "Subscriber added",
+      statusCode: 200,
     });
   } catch {
     res.status(500).send({

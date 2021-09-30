@@ -24,7 +24,7 @@ export const homeFeed = async (req, res) => {
 
       //   he has joined some communities
       const posts = await Post.find({
-        community: { $in: [communities.map((c) => c._id)] },
+        community: { $in: communities },
       }).sort({ votes: -1 });
 
       return res.send({
@@ -39,7 +39,6 @@ export const homeFeed = async (req, res) => {
 
     // give 'em all trending posts
     const posts = await Post.find({}).sort({ votes: -1 });
-    console.log("e");
 
     res.send({
       success: true,
