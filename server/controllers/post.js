@@ -16,7 +16,16 @@ export const homeFeed = async (req, res) => {
       //   he has joined some communities or has created some posts
       const posts = await Post.find({
         $or: [{ community: { $in: communities } }, { author: req.user._id }],
-      }).sort({ votes: -1 });
+      })
+        .sort({ votes: -1 })
+        .populate({
+          path: "author",
+          select: "username -_id",
+        })
+        .populate({
+          path: "community",
+          select: "name -_id",
+        });
 
       return res.send({
         success: true,
@@ -29,7 +38,16 @@ export const homeFeed = async (req, res) => {
     }
 
     // give 'em all trending posts
-    const posts = await Post.find({}).sort({ votes: -1 });
+    const posts = await Post.find({})
+      .sort({ votes: -1 })
+      .populate({
+        path: "author",
+        select: "username",
+      })
+      .populate({
+        path: "community",
+        select: "name",
+      });
 
     res.send({
       success: true,

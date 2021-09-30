@@ -16,7 +16,9 @@ import { Button } from "../shared/Button.style";
 import { logoutUser } from "../../features/authSlice";
 
 const Navbar = () => {
-  const { refreshToken, user } = useSelector((state: RootState) => state.auth);
+  const { refreshToken, accessToken, user } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
 
   return (
@@ -28,14 +30,18 @@ const Navbar = () => {
         </NavLeft>
 
         <NavRight>
-          {refreshToken ? (
+          {refreshToken || accessToken ? (
             <>
               <CreateButton />
 
               <NavLinks>
-               {user &&  <li>
-                  <NavLink to={`/u/${user.username}`}>{user.username}</NavLink>
-                </li>}
+                {user && (
+                  <li>
+                    <NavLink to={`/u/${user.username}`}>
+                      {user.username}
+                    </NavLink>
+                  </li>
+                )}
                 <li>
                   <NavLink
                     to="/logout"

@@ -25,11 +25,11 @@ const Search = () => {
                 <option value="new">New</option>
               </SortDropdownSelect>
             </SortDropdownWrapper>
-            {posts.length > 0 ? (
+            {/* {posts.length > 0 ? (
               posts.map((post) => <PostCard key={post.id} {...post} />)
             ) : (
               <p>Oops, no posts found!</p>
-            )}
+            )} */}
           </div>
         ) : (
           "Oops, nothing found!"

@@ -8,13 +8,12 @@ import {
 } from "./PostCard.style";
 
 const PostCard = ({
-  id,
+  _id,
   title,
   content,
-  comments,
   community,
-  user,
-  datePosted,
+  author,
+  postedAt,
 }: Post) => {
   return (
     <PostCardWrapper>
@@ -34,7 +33,7 @@ const PostCard = ({
             />
           </svg>
         </button>
-        <span className="comments">{comments}</span>
+        <span className="comments">{5}</span>
 
         <button>
           <svg
@@ -54,28 +53,28 @@ const PostCard = ({
       </PostCardLeft>
       <PostCardRight>
         <h3>
-          <Link to={`/posts/${id}`}>{title}</Link>
+          <Link to={`/posts/${_id}`}>{title}</Link>
         </h3>
 
         <p>{content.length > 20 ? content.slice(0, 20) + "..." : content}</p>
 
         <PostCardBottom>
           <span className="comments">
-            <Link to={`/posts/${id}`}>{comments} Comments</Link>
+            <Link to={`/posts/${_id}`}>{4} Comments</Link>
           </span>
 
           <span className="community">
-            <Link to={`/${community}`}>{community}</Link>
+            <Link to={`/c/${community.name}`}>c/{community.name}</Link>
           </span>
 
           <span>
             by{" "}
             <span className="user">
-              <Link to={`/${user}`}>{user}</Link>
+              <Link to={`/u/${author.username}`}>u/{author.username}</Link>
             </span>
           </span>
 
-          <span className="date">{datePosted}</span>
+          <span className="date">{postedAt}</span>
         </PostCardBottom>
       </PostCardRight>
     </PostCardWrapper>

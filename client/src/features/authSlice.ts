@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserObj } from "../types";
-import { getTokens, saveAccessTokens, saveTokens } from "../utils/helpers";
+import {
+  getTokens,
+  removeTokens,
+  saveAccessTokens,
+  saveTokens,
+} from "../utils/helpers";
 
 interface Tokens {
   access_token: string;
@@ -32,6 +37,8 @@ const authSlice = createSlice({
       state.refreshToken = refresh_token;
     },
     logoutUser: (state) => {
+      removeTokens();
+
       state.accessToken = null;
       state.refreshToken = null;
       state.user = null;
@@ -51,7 +58,8 @@ const authSlice = createSlice({
 });
 
 // action creators
-export const { loginUser, logoutUser, setAccessToken, setCurrentUser } = authSlice.actions;
+export const { loginUser, logoutUser, setAccessToken, setCurrentUser } =
+  authSlice.actions;
 
 // reducer
 export default authSlice.reducer;

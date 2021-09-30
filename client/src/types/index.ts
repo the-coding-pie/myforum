@@ -6,14 +6,17 @@ export interface UserObj {
 }
 
 export interface Post {
-  id: number;
+  _id: string;
   title: string;
   content: string;
-  comments: number;
-  community: string;
-  user: string;
-  datePosted: string;
-  votes: number;
+  community: {
+    name: string;
+  };
+  author: {
+    username: string;
+  };
+  postedAt: string;
+  votes: string;
 }
 
 // toast

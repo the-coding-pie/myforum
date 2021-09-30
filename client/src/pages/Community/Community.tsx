@@ -37,11 +37,11 @@ const Community = () => {
               <option value="new">New</option>
             </SortDropdownSelect>
           </SortDropdownWrapper>
-          {posts.length > 0 ? (
-            posts.map((post) => <PostCard key={post.id} {...post} />)
+          {/* {posts.length > 0 ? (
+            posts.map((post) => <PostCard key={post._id} {...post} />)
           ) : (
             <p>Oops, no posts found!</p>
-          )}
+          )} */}
         </div>
 
         <AboutCard about="lowaerjsadf asdfsafasdfasdfasdf" subscribers="44.4m" creatdAt="22 June 2021" />

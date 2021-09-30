@@ -5,12 +5,14 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MainLayout from "./components/layouts/MainLayout/MainLayout";
 import axios from "axios";
-import { setAccessToken } from "./features/authSlice";
+import { logoutUser, setAccessToken } from "./features/authSlice";
 import store from "./app/store";
-import { BASE_URL } from "./types/constants";
+import { BASE_URL, ERROR } from "./types/constants";
 import Toasts from "./components/Toasts/Toasts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { addToast } from "./features/toastSlice";
 
 const theme: DefaultTheme = {
   fonts: {
@@ -57,7 +59,11 @@ axios.interceptors.response.use(
           // get the access_token
           const { access_token } = response.data.data;
 
-          store.dispatch(setAccessToken(access_token));
+          store.dispatch(
+            setAccessToken({
+              access_token,
+            })
+          );
 
           originalRequest.headers["Authorization"] = "Bearer " + access_token;
 
@@ -69,6 +75,15 @@ axios.interceptors.response.use(
         });
     }
 
+    console.log(error);
+    // if error === 401, then do the following, or reject Promise
+    store.dispatch(
+      addToast({
+        kind: ERROR,
+        msg: "Token expired!",
+      })
+    );
+    store.dispatch(logoutUser());
     return Promise.reject(error);
   }
 );

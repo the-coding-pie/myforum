@@ -9,11 +9,13 @@ import { addToast } from "../../../features/toastSlice";
 
 const MainLayout = () => {
   // this layout is just for deciding whether to show admin panel or normal screen, if exists
-
+  // you can put this directly inside the DefaultLayout
   const dispatch = useDispatch();
 
   // get user
-  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+  const { accessToken, refreshToken } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const getCurrentUser = () => {
     axios
@@ -30,10 +32,6 @@ const MainLayout = () => {
       .catch(({ response }) => {
         try {
           switch (response.status) {
-            // the try to get new access token failed due to invalid refresh token
-            case 401:
-              dispatch(logoutUser());
-              break;
             default:
               dispatch(
                 addToast({
@@ -55,14 +53,11 @@ const MainLayout = () => {
   };
 
   useEffect(() => {
-    getCurrentUser();
+    if (refreshToken || accessToken) {
+      getCurrentUser();
+    }
   }, []);
 
-  //   if (user && user !== {}) {
-  //     return <DefaultLayout />;
-  //   }
-
-  //   return <div>Loading</div>;
   return <DefaultLayout />;
 };
 
