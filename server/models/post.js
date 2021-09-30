@@ -9,7 +9,7 @@ const postSchema = new mongoose.Schema({
   },
   kind: {
     type: String,
-    enum: ["text", "link"],
+    enum: ["text", "url"],
     default: "text",
   },
   content: {

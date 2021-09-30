@@ -5,10 +5,11 @@ import * as _ from "lodash";
 // GET /communities
 export const getCommunities = async (req, res) => {
   try {
-    const communities = await Community.find({}).populate({
-      path: "admin",
-      select: "username",
-    });
+    // const communities = await Community.find({}).populate({
+    //   path: "admin",
+    //   select: "username",
+    // });
+    const communities = await Community.find({}).select("_id name");
 
     res.send({
       success: true,
