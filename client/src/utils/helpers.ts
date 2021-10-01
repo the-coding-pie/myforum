@@ -1,4 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+import TimeAgo from "javascript-time-ago";
+// English.
+import en from "javascript-time-ago/locale/en.json";
 
 export const checkTokens = (): boolean => {
   try {
@@ -81,4 +84,18 @@ export const isValid = (errors: Object): boolean => {
   Object.values(errors).forEach((error) => error.length > 0 && (valid = false));
 
   return valid;
+};
+
+TimeAgo.addDefaultLocale(en);
+
+// getDate
+export const getDate = (date: string) => {
+  const timeAgo = new TimeAgo("en-US");
+
+  return timeAgo.format(new Date(date));
+};
+
+export const getMDY = (d: string) => {
+  const date = new Date(d).toUTCString().split(" ");
+  return date[2] + " " + date[1] + " " + date[3];
 };

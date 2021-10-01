@@ -42,7 +42,7 @@ const Home = () => {
       <div>
         <SortDropdownWrapper>
           <SortDropdownSelect
-            disabled={!posts}
+            disabled={!posts || posts.length <= 0}
             onChange={(e) => setCurrentSort(e.target.value)}
           >
             {SortOptions.map((s) => (

@@ -5,6 +5,12 @@ export interface UserObj {
   username: string;
 }
 
+export interface UserDetailObj {
+  id: string;
+  username: string;
+  joinedAt: string;
+}
+
 export interface Post {
   _id: string;
   title: string;

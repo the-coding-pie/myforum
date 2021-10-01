@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Post } from "../../types";
+import { getDate } from "../../utils/helpers";
 import {
   PostCardBottom,
   PostCardLeft,
@@ -75,7 +76,7 @@ const PostCard = ({
             </span>
           </span>
 
-          <span className="date">{postedAt}</span>
+          <span className="date">{getDate(postedAt)}</span>
         </PostCardBottom>
       </PostCardRight>
     </PostCardWrapper>

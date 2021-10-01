@@ -53,22 +53,11 @@ const Community = () => {
 
   return (
     <div>
-      <CommunityBanner>
-        <CommunityLeft>
-          <h3>{name.toUpperCase()}</h3>
-          <span>c/{name}</span>
-        </CommunityLeft>
-        {posts && (
-          <CommunityRight>
-            <Button>Join</Button>
-          </CommunityRight>
-        )}
-      </CommunityBanner>
       <GridLayoutWrapper>
         <div>
           <SortDropdownWrapper>
             <SortDropdownSelect
-              disabled={!posts}
+              disabled={!posts || posts.length <= 0}
               onChange={(e) => setCurrentSort(e.target.value)}
             >
               {SortOptions.map((s) => (
