@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getUser,
+  getCurrentUser,
   loginUser,
   refreshToken,
   registerUser,
@@ -10,7 +10,7 @@ import { authMiddleware } from "../middleware/auth";
 const router = express.Router();
 
 // GET /auth/getUser - get current user
-router.get("/getUser", authMiddleware, getUser);
+router.get("/getUser", authMiddleware, getCurrentUser);
 
 // POST /auth/register - register new user
 router.post("/register", registerUser);

@@ -75,15 +75,19 @@ axios.interceptors.response.use(
         });
     }
 
-    console.log(error);
     // if error === 401, then do the following, or reject Promise
-    store.dispatch(
-      addToast({
-        kind: ERROR,
-        msg: "Token expired!",
-      })
-    );
-    store.dispatch(logoutUser());
+    if (
+      error.response.status === 401 &&
+      !originalRequest.url.includes("login")
+    ) {
+      store.dispatch(
+        addToast({
+          kind: ERROR,
+          msg: "Token expired!",
+        })
+      );
+      store.dispatch(logoutUser());
+    }
     return Promise.reject(error);
   }
 );

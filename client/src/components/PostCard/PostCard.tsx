@@ -11,6 +11,7 @@ const PostCard = ({
   _id,
   title,
   content,
+  comments,
   community,
   author,
   postedAt,
@@ -33,7 +34,7 @@ const PostCard = ({
             />
           </svg>
         </button>
-        <span className="comments">{5}</span>
+        <span className="comments">{comments}</span>
 
         <button>
           <svg
@@ -60,7 +61,7 @@ const PostCard = ({
 
         <PostCardBottom>
           <span className="comments">
-            <Link to={`/posts/${_id}`}>{4} Comments</Link>
+            <Link to={`/posts/${_id}`}>{comments} Comments</Link>
           </span>
 
           <span className="community">

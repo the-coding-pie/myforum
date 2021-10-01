@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import _ from "lodash";
 
 // GET /posts
-export const homeFeed = async (req, res) => {
+export const getPosts = async (req, res) => {
   try {
     // if user is signed in, then give 'em favorite posts
     // else give 'em all trending posts
@@ -69,7 +69,7 @@ export const homeFeed = async (req, res) => {
     }
 
     // give 'em all trending posts
-    const posts = await Post.find({})
+    let posts = await Post.find({})
       .sort({ votes: -1 })
       .populate({
         path: "author",

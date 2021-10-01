@@ -15,8 +15,9 @@ export interface Post {
   author: {
     username: string;
   };
+  comments: number;
   postedAt: string;
-  votes: string;
+  votes: number;
 }
 
 // toast

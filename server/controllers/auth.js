@@ -3,7 +3,7 @@ import { generateAccessToken, generateRefreshToken } from "../utils/token";
 import jwt from "jsonwebtoken";
 
 // /auth/getUser
-export const getUser = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById({ _id: req.user._id });
 

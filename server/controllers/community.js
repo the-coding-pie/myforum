@@ -9,7 +9,9 @@ export const getCommunities = async (req, res) => {
     //   path: "admin",
     //   select: "username",
     // });
-    const communities = await Community.find({}).select("_id name").sort({ subscribers: -1 });
+    const communities = await Community.find({})
+      .select("_id name")
+      .sort({ subscribers: -1 });
 
     res.send({
       success: true,
@@ -74,6 +76,69 @@ export const createCommunity = async (req, res) => {
       data: {},
       message: "New Community has been created successfully",
       statusCode: 201,
+    });
+  } catch {
+    res.status(500).send({
+      success: false,
+      data: {},
+      message: "Oops, something went wrong!",
+      statusCode: 500,
+    });
+  }
+};
+
+// GET /communities/:name
+export const getCommunity = async (req, res) => {
+  try {
+    const name = req.params.name.trim();
+
+    if (!name) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Community name is required",
+        statusCode: 400,
+      });
+    }
+
+    if (!name.match(/^[A-Za-z0-9_-]*$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid community name",
+        statusCode: 400,
+      });
+    }
+
+    // find the community
+    const community = await Community.findOne({ name })
+      .populate({
+        path: "admin",
+        select: "_id username",
+      })
+      .populate({
+        path: "subscribers",
+        select: "_id",
+      });
+
+    // if no community found
+    if (!community) {
+      return res.status(404).send({
+        success: false,
+        data: {},
+        message: "Community doesn't exists",
+        statusCode: 404,
+      });
+    }
+
+    let { _id, name: cname, about, admin, subscribers, createdAt } = community;
+    subscribers = community.subscribers.length;
+
+    res.send({
+      success: true,
+      data: { _id, cname, about, admin, subscribers, createdAt },
+      message: "",
+      statusCode: 200,
     });
   } catch {
     res.status(500).send({
