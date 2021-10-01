@@ -30,3 +30,9 @@ export interface ToastObj {
     | typeof DEFAULT;
   msg: string;
 }
+
+// community obj
+export interface CommunityObj {
+  _id: string;
+  name: string;
+}

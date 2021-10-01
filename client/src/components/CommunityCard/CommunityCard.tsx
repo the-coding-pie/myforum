@@ -1,29 +1,33 @@
 import React from "react";
 import {
   CommunityCardWrapper,
-  CommunityItem,
   CommunityList,
 } from "./CommunityCard.style";
-import communities from "../../communities.json";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../types/constants";
+import { useQuery } from "react-query";
+import Communities from "../Communities/Communities";
 
 const CommunityCard = () => {
+  const getCommunities = async () => {
+    const res = await axios.get(`${BASE_URL}/communities`);
+
+    return res.data.data.communities;
+  };
+
+  const {
+    data: communities,
+    isLoading,
+    error,
+  } = useQuery([`communities`], getCommunities);
+
   return (
     <CommunityCardWrapper>
       <div className="top">
         <h3>Top Communities</h3>
       </div>
       <CommunityList>
-        {communities.length > 0 &&
-          communities.map((c, index) => (
-            <CommunityItem key={c.id}>
-              <Link to={`/${c.name}`}>
-                <span className="ranking">{index + 1}</span>
-
-                <span className="name">{c.name}</span>
-              </Link>
-            </CommunityItem>
-          ))}
+        <Communities {...{ communities, isLoading, error }} />
       </CommunityList>
     </CommunityCardWrapper>
   );

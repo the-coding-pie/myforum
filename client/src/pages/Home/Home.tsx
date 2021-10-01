@@ -1,71 +1,57 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 import CommunityCard from "../../components/CommunityCard/CommunityCard";
-import PostCard from "../../components/PostCard/PostCard";
+import Posts from "../../components/Posts/Posts";
 import { GridLayoutWrapper } from "../../components/shared/GridLayout.style";
 import {
   SortDropdownSelect,
   SortDropdownWrapper,
 } from "../../components/shared/SortDropdown.style";
-import { logoutUser } from "../../features/authSlice";
-import { addToast } from "../../features/toastSlice";
-import { Post } from "../../types";
-import { BASE_URL, ERROR } from "../../types/constants";
+import { BASE_URL, SortOptions } from "../../types/constants";
 
 const Home = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const dispatch = useDispatch();
+  const { accessToken } = useSelector((state: RootState) => state.auth);
 
-  const getPosts = useCallback(() => {
-    axios
-      .get(`${BASE_URL}/posts`)
-      .then((response) => {
-        const { data } = response.data;
-        setPosts(data.posts);
-      })
-      .catch(({ response }) => {
-        try {
-          switch (response.status) {
-            default:
-              dispatch(
-                addToast({
-                  kind: ERROR,
-                  msg: "Oops, something went wrong",
-                })
-              );
-          }
-        } catch {
-          dispatch(
-            addToast({
-              kind: ERROR,
-              msg: "Oops, something went wrong",
-            })
-          );
-        }
-      });
-  }, []);
+  const [currentSort, setCurrentSort] = useState(SortOptions[0]);
 
-  useEffect(() => {
-    getPosts();
-  }, []);
+  const headers = accessToken
+    ? {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    : {};
 
-  console.log(posts);
+  const getPosts = async ({ queryKey }: { queryKey: string[] }) => {
+    const res = await axios.get(`${BASE_URL}/posts?sortBy=${queryKey[1]}`, {
+      headers,
+    });
+
+    return res.data.data.posts;
+  };
+
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useQuery([`getPost?sortBy=${currentSort}`, currentSort], getPosts);
 
   return (
     <GridLayoutWrapper>
       <div>
         <SortDropdownWrapper>
-          <SortDropdownSelect>
-            <option value="popular">Popular</option>
-            <option value="new">New</option>
+          <SortDropdownSelect
+            disabled={!posts}
+            onChange={(e) => setCurrentSort(e.target.value)}
+          >
+            {SortOptions.map((s) => (
+              <option value={s}>{s}</option>
+            ))}
           </SortDropdownSelect>
         </SortDropdownWrapper>
-        {posts && posts.length > 0 ? (
-          posts.map((post) => <PostCard key={post._id} {...post} />)
-        ) : (
-          <p>Oops, no posts found!</p>
-        )}
+
+        <Posts {...{ isLoading, error, posts }} />
       </div>
       <CommunityCard />
     </GridLayoutWrapper>

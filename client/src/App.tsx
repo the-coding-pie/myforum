@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addToast } from "./features/toastSlice";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const theme: DefaultTheme = {
   fonts: {
@@ -92,31 +93,35 @@ axios.interceptors.response.use(
   }
 );
 
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
-    <div>
-      <Toasts />
-      <ToastContainer position="bottom-left" />
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <Toasts />
+        <ToastContainer position="bottom-left" />
 
-      <Router>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
+        <Router>
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
 
-          <Switch>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/signup">
-              <Signup />
-            </Route>
+            <Switch>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/signup">
+                <Signup />
+              </Route>
 
-            <Route path="*">
-              <MainLayout />
-            </Route>
-          </Switch>
-        </ThemeProvider>
-      </Router>
-    </div>
+              <Route path="*">
+                <MainLayout />
+              </Route>
+            </Switch>
+          </ThemeProvider>
+        </Router>
+      </div>
+    </QueryClientProvider>
   );
 };
 

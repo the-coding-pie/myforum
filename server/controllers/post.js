@@ -7,6 +7,88 @@ import validator from "validator";
 // GET /posts
 export const getPosts = async (req, res) => {
   try {
+    const { sortBy, comm } = req.query;
+    const sort = sortBy === "New" ? { postedAt: -1 } : { votes: -1 };
+
+    // if community in query parameter
+    if (comm) {
+      if (!comm.match(/^[A-Za-z0-9_]*$/)) {
+        return res.status(400).send({
+          success: false,
+          data: {},
+          message: "Invalid community name",
+          statusCode: 400,
+        });
+      }
+
+      // find the community
+      const c = await Community.findOne({ name: comm });
+
+      // if no community found
+      if (!c) {
+        return res.status(404).send({
+          success: false,
+          data: {},
+          message: "Community doesn't exists",
+          statusCode: 404,
+        });
+      }
+
+      console.log(sort)
+      let posts = await Post.find({
+        community: c,
+      })
+        .sort(sort)
+        .populate({
+          path: "author",
+          select: "username -_id",
+        })
+        .populate({
+          path: "community",
+          select: "name -_id",
+        })
+        .populate({
+          path: "comments",
+          select: "_id",
+        });
+
+      posts = await posts.map((p) => {
+        let {
+          _id,
+          title,
+          kind,
+          content,
+          community,
+          comments,
+          author,
+          votes,
+          postedAt,
+        } = p;
+
+        comments = p.comments.length;
+        return {
+          _id,
+          title,
+          kind,
+          content,
+          community,
+          comments,
+          author,
+          votes,
+          postedAt,
+        };
+      });
+
+      return res.send({
+        success: true,
+        data: {
+          posts,
+        },
+        message: "",
+        statusCode: 200,
+      });
+    }
+
     // if user is signed in, then give 'em favorite posts
     // else give 'em all trending posts
     if (req.user) {
@@ -18,7 +100,7 @@ export const getPosts = async (req, res) => {
       let posts = await Post.find({
         $or: [{ community: { $in: communities } }, { author: req.user._id }],
       })
-        .sort({ votes: -1 })
+        .sort(sort)
         .populate({
           path: "author",
           select: "username -_id",
@@ -71,7 +153,7 @@ export const getPosts = async (req, res) => {
 
     // give 'em all trending posts
     let posts = await Post.find({})
-      .sort({ votes: -1 })
+      .sort(sort)
       .populate({
         path: "author",
         select: "username",
