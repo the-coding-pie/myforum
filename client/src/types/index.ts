@@ -36,3 +36,15 @@ export interface CommunityObj {
   _id: string;
   name: string;
 }
+
+export interface CommunityDetailObj {
+  _id: string;
+  cname: string;
+  about: string;
+  admin: {
+    _id: string;
+    username: string;
+  };
+  subscribers: number;
+  createdAt: string;
+}
