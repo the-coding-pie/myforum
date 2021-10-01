@@ -1,9 +1,12 @@
+import Post from "../models/post";
 import { User } from "../models/user";
 
 // GET /users/:username
 export const getUser = async (req, res) => {
   try {
     const username = req.params.username.trim();
+    const { sortBy } = req.query;
+    const sort = sortBy === "New" ? { postedAt: -1 } : { votes: -1 };
 
     if (!username) {
       return res.status(400).send({
@@ -13,7 +16,7 @@ export const getUser = async (req, res) => {
         statusCode: 400,
       });
     }
-    
+
     if (!username.match(/^[A-Za-z0-9_\-]*$/)) {
       return res.status(400).send({
         success: false,
@@ -38,9 +41,57 @@ export const getUser = async (req, res) => {
       });
     }
 
-    res.send({
+    // let fetch all his posts
+    let posts = await Post.find({
+      author: user,
+    })
+      .sort(sort)
+      .populate({
+        path: "author",
+        select: "username -_id",
+      })
+      .populate({
+        path: "community",
+        select: "name -_id",
+      })
+      .populate({
+        path: "comments",
+        select: "_id",
+      });
+
+    posts = await posts.map((p) => {
+      let {
+        _id,
+        title,
+        kind,
+        content,
+        community,
+        comments,
+        author,
+        votes,
+        postedAt,
+      } = p;
+
+      comments = p.comments.length;
+      return {
+        _id,
+        title,
+        kind,
+        content,
+        community,
+        comments,
+        author,
+        votes,
+        postedAt,
+      };
+    });
+
+    return res.send({
       success: true,
-      data: user,
+      data: {
+        posts,
+        user,
+      },
       message: "",
       statusCode: 200,
     });
