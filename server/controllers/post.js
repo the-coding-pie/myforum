@@ -33,8 +33,7 @@ export const getPosts = async (req, res) => {
           statusCode: 404,
         });
       }
-
-      console.log(sort)
+      
       let posts = await Post.find({
         community: c,
       })
