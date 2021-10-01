@@ -2,6 +2,7 @@ import Community from "../models/community";
 import Post from "../models/post";
 import mongoose from "mongoose";
 import _ from "lodash";
+import validator from "validator";
 
 // GET /posts
 export const getPosts = async (req, res) => {
@@ -134,8 +135,6 @@ export const createPost = async (req, res) => {
   try {
     const { title, content, community, kind } = req.body;
 
-    const foundCommunity = await Community.findOne({ name: community });
-
     // validation
     if (!title) {
       return res.status(400).send({
@@ -185,7 +184,18 @@ export const createPost = async (req, res) => {
         message: "Community is required",
         statusCode: 400,
       });
-    } else if (!foundCommunity) {
+    } else if (!community.match(/^[A-Za-z0-9_]*$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid community name",
+        statusCode: 400,
+      });
+    }
+
+    const foundCommunity = await Community.findOne({ name: community });
+
+    if (!foundCommunity) {
       return res.status(400).send({
         success: false,
         data: {},
@@ -196,8 +206,8 @@ export const createPost = async (req, res) => {
 
     // create a new post
     const newPost = await Post({
-      title,
-      content,
+      title: validator.escape(title),
+      content: validator.escape(content),
       kind,
       community: foundCommunity,
       author: req.user._id,

@@ -13,8 +13,8 @@ export const getUser = async (req, res) => {
         statusCode: 400,
       });
     }
-
-    if (!username.match(/^[A-Za-z0-9_-]*$/)) {
+    
+    if (!username.match(/^[A-Za-z0-9_\-]*$/)) {
       return res.status(400).send({
         success: false,
         data: {},

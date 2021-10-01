@@ -49,10 +49,18 @@ export const registerUser = async (req, res) => {
         message: "Username is required",
         statusCode: 400,
       });
+    } else if (!username.match(/^[A-Za-z0-9_\-]*$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message:
+          "Community names must only contain letters, numbers, dashes, and underscores",
+        statusCode: 400,
+      });
     }
 
-    // if no email exists
     if (!email) {
+      // if no email exists
       return res.status(400).send({
         success: false,
         data: {},

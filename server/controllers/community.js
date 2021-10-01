@@ -44,7 +44,7 @@ export const createCommunity = async (req, res) => {
         message: "Name is required",
         statusCode: 400,
       });
-    } else if (!name.match(/^[A-Za-z0-9_-]*$/)) {
+    } else if (!name.match(/^[A-Za-z0-9_]*$/)) {
       return res.status(400).send({
         success: false,
         data: {},
@@ -101,7 +101,7 @@ export const getCommunity = async (req, res) => {
       });
     }
 
-    if (!name.match(/^[A-Za-z0-9_-]*$/)) {
+    if (!name.match(/^[A-Za-z0-9_]*$/)) {
       return res.status(400).send({
         success: false,
         data: {},
@@ -164,7 +164,7 @@ export const updateSubscribers = async (req, res) => {
       });
     }
 
-    if (!name.match(/^[A-Za-z0-9_-]*$/)) {
+    if (!name.match(/^[A-Za-z0-9_]*$/)) {
       return res.status(400).send({
         success: false,
         data: {},

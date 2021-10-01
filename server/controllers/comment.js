@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import _ from "lodash";
 import Post from "../models/post";
 import Comment from "../models/comment";
+import validator from "validator";
 
 // GET /posts/:id/comments
 export const getComments = async (req, res) => {
@@ -115,7 +116,7 @@ export const addComment = async (req, res) => {
     // valid post and comment
     // sanitize it and save
     const newComment = await Comment({
-      comment,
+      comment: validator.escape(comment),
       post,
       commentator: req.user._id,
     });

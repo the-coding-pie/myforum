@@ -7,7 +7,7 @@ const communitySchema = new mongoose.Schema({
     unique: true,
     minlength: 3,
     maxlength: 21,
-    match: [/^[A-Za-z0-9_-]*$/],
+    match: [/^[A-Za-z0-9_]*$/],
     trim: true,
   },
   about: {
