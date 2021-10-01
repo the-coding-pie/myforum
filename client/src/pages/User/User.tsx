@@ -18,17 +18,21 @@ const User = () => {
   const { username } = useParams<{ username: string }>();
   const [currentSort, setCurrentSort] = useState(SortOptions[0]);
 
-  const getUserNPosts = async ({ queryKey }: { queryKey: string[] }) => {
+  const getUsersPosts = async ({ queryKey }: { queryKey: string[] }) => {
     const res = await axios.get(
-      `${BASE_URL}/users/${username}?sortBy=${queryKey[1]}`
+      `${BASE_URL}/users/${username}/posts?sortBy=${queryKey[1]}`
     );
 
-    return res.data.data;
+    return res.data.data.posts;
   };
 
-  const { data, isLoading, error } = useQuery(
-    [`getUser?sortBy=${currentSort}`, currentSort],
-    getUserNPosts
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useQuery(
+    [`getUsersPosts?sortBy=${currentSort}`, currentSort],
+    getUsersPosts
   );
 
   return (
@@ -36,7 +40,7 @@ const User = () => {
       <div>
         <SortDropdownWrapper>
           <SortDropdownSelect
-            disabled={!data || data?.posts.length <= 0}
+            disabled={!posts || posts.length <= 0}
             onChange={(e) => setCurrentSort(e.target.value)}
           >
             {SortOptions.map((s) => (
@@ -44,9 +48,9 @@ const User = () => {
             ))}
           </SortDropdownSelect>
         </SortDropdownWrapper>
-        <Posts {...{ isLoading, error, posts: data?.posts }} />
+        <Posts {...{ isLoading, error, posts }} />
       </div>
-      <UserCard {...{ isLoading, error, user: data?.user }} />
+      <UserCard username={username} />
     </GridLayoutWrapper>
   );
 };

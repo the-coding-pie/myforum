@@ -45,7 +45,7 @@ export const getComments = async (req, res) => {
       .sort({ postedAt: -1 })
       .populate({
         path: "commentator",
-        select: "username -_id",
+        select: "username",
       });
 
     res.send({

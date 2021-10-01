@@ -1,7 +1,10 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { addToast } from "../../features/toastSlice";
 import { CommunityDetailObj } from "../../types";
-import { BASE_URL } from "../../types/constants";
+import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
 import { getDate, getMDY } from "../../utils/helpers";
 import { Button } from "../shared/Button.style";
 import { AboutBody, AboutCardWrapper } from "./AboutCard.style";
@@ -11,6 +14,11 @@ interface Props {
 }
 
 const AboutCard = ({ name }: Props) => {
+  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
   const getCommunity = async () => {
     const res = await axios.get(`${BASE_URL}/communities/${name}`);
 
@@ -21,7 +29,7 @@ const AboutCard = ({ name }: Props) => {
     data: community,
     isLoading,
     error,
-  } = useQuery<CommunityDetailObj, any>([`getCommunity`], getCommunity);
+  } = useQuery<CommunityDetailObj, any>([`getCommunity/${name}`], getCommunity);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -31,6 +39,61 @@ const AboutCard = ({ name }: Props) => {
     return <div>An error has occurred: {error.message}</div>;
   }
 
+  const joinOrLeaveCommunity = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    axios
+      .put(`${BASE_URL}/communities/${name}/subscribers`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        const msg = response.data.message;
+
+        dispatch(
+          addToast({
+            kind: SUCCESS,
+            msg,
+          })
+        );
+
+        queryClient.invalidateQueries(`getCommunity/${name}`);
+      })
+      .catch(({ response }) => {
+        try {
+          switch (response.status) {
+            case 400:
+            case 404:
+              dispatch(
+                addToast({
+                  kind: ERROR,
+                  msg: response.data.message,
+                })
+              );
+              break;
+            default:
+              dispatch(
+                addToast({
+                  kind: ERROR,
+                  msg: "Oops, something went wrong! Try reload...",
+                })
+              );
+              break;
+          }
+        } catch (e) {
+          dispatch(
+            addToast({
+              kind: ERROR,
+              msg: "Oops, something went wrong!",
+            })
+          );
+        }
+      });
+  };
+
   return (
     <AboutCardWrapper>
       <div className="top">
@@ -38,11 +101,15 @@ const AboutCard = ({ name }: Props) => {
       </div>
 
       <AboutBody>
-        <p style={{
-          textAlign: "center"
-        }}>{community?.about}</p>
+        <p
+          style={{
+            textAlign: "center",
+          }}
+        >
+          {community?.about}
+        </p>
         <div className="subscribers">
-          {community?.subscribers}
+          {community?.subscribersCount}
           <p>Subscribers</p>
         </div>
         <div className="created">
@@ -61,7 +128,18 @@ const AboutCard = ({ name }: Props) => {
           </svg>
           Created {community?.createdAt && getMDY(community?.createdAt)}
         </div>
-        <Button sm>Join</Button>
+
+        {community?.subscribers
+          .map((s) => s._id)
+          .includes(user?._id as string) ? (
+          <Button light onClick={joinOrLeaveCommunity}>
+            Leave
+          </Button>
+        ) : (
+          <Button sm onClick={joinOrLeaveCommunity}>
+            Join
+          </Button>
+        )}
       </AboutBody>
     </AboutCardWrapper>
   );

@@ -132,11 +132,19 @@ export const getCommunity = async (req, res) => {
     }
 
     let { _id, name: cname, about, admin, subscribers, createdAt } = community;
-    subscribers = community.subscribers.length;
+    let subscribersCount = community.subscribers.length;
 
     res.send({
       success: true,
-      data: { _id, cname, about, admin, subscribers, createdAt },
+      data: {
+        _id,
+        cname,
+        about,
+        admin,
+        subscribers,
+        subscribersCount,
+        createdAt,
+      },
       message: "",
       statusCode: 200,
     });

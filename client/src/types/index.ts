@@ -1,12 +1,12 @@
 import { DEFAULT, ERROR, INFO, SUCCESS, WARNING } from "./constants";
 
 export interface UserObj {
-  id: number;
+  _id: string;
   username: string;
 }
 
 export interface UserDetailObj {
-  id: string;
+  _id: string;
   username: string;
   joinedAt: string;
 }
@@ -15,6 +15,7 @@ export interface Post {
   _id: string;
   title: string;
   content: string;
+  kind: "text" | "link";
   community: {
     name: string;
   };
@@ -51,6 +52,17 @@ export interface CommunityDetailObj {
     _id: string;
     username: string;
   };
-  subscribers: number;
+  subscribers: { _id: string }[];
+  subscribersCount: number;
   createdAt: string;
+}
+
+export interface CommentObj {
+  _id: string;
+  comment: string;
+  commentator: {
+    _id: string;
+    username: string;
+  };
+  postedAt: string;
 }

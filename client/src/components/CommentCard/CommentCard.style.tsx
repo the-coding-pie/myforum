@@ -8,7 +8,7 @@ export const CommentCardWrapper = styled.div`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: #333232;
   padding: 0.8rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   border: 1px solid #ccc;
 
   p {
@@ -20,6 +20,7 @@ export const CommentCardWrapper = styled.div`
 export const CommentCardTop = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
 
   a {

@@ -33,7 +33,7 @@ export const getPosts = async (req, res) => {
           statusCode: 404,
         });
       }
-      
+
       let posts = await Post.find({
         community: c,
       })
@@ -197,6 +197,94 @@ export const getPosts = async (req, res) => {
       success: true,
       data: {
         posts,
+      },
+      message: "",
+      statusCode: 200,
+    });
+  } catch {
+    res.status(500).send({
+      success: false,
+      data: {},
+      message: "Oops, something went wrong!",
+      statusCode: 500,
+    });
+  }
+};
+
+// GET /posts/:id
+export const getPost = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Id is required",
+        statusCode: 400,
+      });
+    }
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid Id",
+        statusCode: 400,
+      });
+    }
+
+    const post = await Post.findOne({
+      _id: id,
+    })
+      .populate({
+        path: "author",
+        select: "username -_id",
+      })
+      .populate({
+        path: "community",
+        select: "name -_id",
+      })
+      .populate({
+        path: "comments",
+        select: "_id",
+      });
+
+    if (!post) {
+      return res.status(404).send({
+        success: false,
+        data: {},
+        message: "No post with that id found",
+        statusCode: 404,
+      });
+    }
+
+    let {
+      _id,
+      title,
+      kind,
+      content,
+      community,
+      comments,
+      author,
+      votes,
+      postedAt,
+    } = post;
+
+    comments = post.comments.length;
+
+    return res.send({
+      success: true,
+      data: {
+        _id,
+        title,
+        kind,
+        content,
+        community,
+        comments,
+        author,
+        votes,
+        postedAt,
       },
       message: "",
       statusCode: 200,

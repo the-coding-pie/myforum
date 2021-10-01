@@ -19,4 +19,9 @@ export const Button = styled.button<Props>`
   font-size: ${({ theme }) => theme.fontSize.sm};
   outline: none;
   width: 100%;
+
+  :disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+  }
 `;
