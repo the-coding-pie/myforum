@@ -121,6 +121,9 @@ export const addComment = async (req, res) => {
     });
     await newComment.save();
 
+    await post.comments.push(newComment);
+    await post.save();
+
     res.status(201).send({
       success: true,
       data: {},

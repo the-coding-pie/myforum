@@ -14,7 +14,7 @@ export const homeFeed = async (req, res) => {
       });
 
       //   he has joined some communities or has created some posts
-      const posts = await Post.find({
+      let posts = await Post.find({
         $or: [{ community: { $in: communities } }, { author: req.user._id }],
       })
         .sort({ votes: -1 })
@@ -25,7 +25,38 @@ export const homeFeed = async (req, res) => {
         .populate({
           path: "community",
           select: "name -_id",
+        })
+        .populate({
+          path: "comments",
+          select: "_id",
         });
+
+      posts = await posts.map((p) => {
+        let {
+          _id,
+          title,
+          kind,
+          content,
+          community,
+          comments,
+          author,
+          votes,
+          postedAt,
+        } = p;
+
+        comments = p.comments.length;
+        return {
+          _id,
+          title,
+          kind,
+          content,
+          community,
+          comments,
+          author,
+          votes,
+          postedAt,
+        };
+      });
 
       return res.send({
         success: true,
@@ -47,7 +78,38 @@ export const homeFeed = async (req, res) => {
       .populate({
         path: "community",
         select: "name",
+      })
+      .populate({
+        path: "comments",
+        select: "_id",
       });
+
+    posts = await posts.map((p) => {
+      let {
+        _id,
+        title,
+        kind,
+        content,
+        community,
+        comments,
+        author,
+        votes,
+        postedAt,
+      } = p;
+
+      comments = p.comments.length;
+      return {
+        _id,
+        title,
+        kind,
+        content,
+        community,
+        comments,
+        author,
+        votes,
+        postedAt,
+      };
+    });
 
     res.send({
       success: true,
@@ -143,7 +205,7 @@ export const createPost = async (req, res) => {
     await newPost.save();
 
     return res.status(201).send({
-      success: false,
+      success: true,
       data: {},
       message: "New post has been created",
       statusCode: 201,

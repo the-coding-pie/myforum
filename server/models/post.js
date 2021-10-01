@@ -27,6 +27,11 @@ const postSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  comments: {
+    type: [mongoose.ObjectId],
+    ref: "Comment",
+    default: [],
+  },
   votes: {
     type: Number,
     default: 0,
@@ -36,6 +41,10 @@ const postSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+postSchema.methods.getCommentsCount = async function () {
+  return this.comments.length;
+};
 
 const Post = mongoose.model("Post", postSchema);
 
