@@ -9,13 +9,16 @@ import { getMDY } from "../../utils/helpers";
 import { Button } from "../shared/Button.style";
 import { AboutBody, AboutCardWrapper } from "./AboutCard.style";
 import { v4 as uuidv4 } from "uuid";
+import Skeleton from "react-loading-skeleton";
 
 interface Props {
   name: string;
 }
 
 const AboutCard = ({ name }: Props) => {
-  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+  const { accessToken, refreshToken, user } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -33,11 +36,43 @@ const AboutCard = ({ name }: Props) => {
   } = useQuery<CommunityDetailObj, any>([`getCommunity/${name}`], getCommunity);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <AboutCardWrapper>
+        <div className="top">
+          <h3>About Community</h3>
+        </div>
+        <Skeleton height="185px" />
+      </AboutCardWrapper>
+    );
   }
 
   if (error) {
-    return <div>An error has occurred: {error.message}</div>;
+    let text = "";
+
+    switch (error.response.status) {
+      case 400:
+        text = "Bad Request: 400";
+        break;
+      case 404:
+        text = "Resource Not Found: 404";
+        break;
+      default:
+        text = "Oops, something went wrong";
+    }
+
+    return (
+      <AboutCardWrapper>
+        <div className="top">
+          <h3>About Community</h3>
+        </div>
+        <AboutBody>
+        <div className="error-side-box" style={{
+          color: "#be2a2a",
+          textAlign: "center"
+        }}>{text}</div>
+        </AboutBody>
+      </AboutCardWrapper>
+    );
   }
 
   const joinOrLeaveCommunity = (
@@ -134,17 +169,18 @@ const AboutCard = ({ name }: Props) => {
           Created {community?.createdAt && getMDY(community?.createdAt)}
         </div>
 
-        {community?.subscribers
-          .map((s) => s._id)
-          .includes(user?._id as string) ? (
-          <Button light onClick={joinOrLeaveCommunity}>
-            Leave
-          </Button>
-        ) : (
-          <Button sm onClick={joinOrLeaveCommunity}>
-            Join
-          </Button>
-        )}
+        {(accessToken || refreshToken) &&
+          (community?.subscribers
+            .map((s) => s._id)
+            .includes(user?._id as string) ? (
+            <Button light onClick={joinOrLeaveCommunity}>
+              Leave
+            </Button>
+          ) : (
+            <Button sm onClick={joinOrLeaveCommunity}>
+              Join
+            </Button>
+          ))}
       </AboutBody>
     </AboutCardWrapper>
   );

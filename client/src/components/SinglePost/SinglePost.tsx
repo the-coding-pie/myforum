@@ -1,5 +1,7 @@
 import React from "react";
+import Skeleton from "react-loading-skeleton";
 import { Post } from "../../types";
+import ErrorPostCard from "../ErrorPostCard/ErrorPostCard";
 import PostCard from "../PostCard/PostCard";
 
 interface Props {
@@ -10,11 +12,11 @@ interface Props {
 
 const SinglePost = ({ isLoading, error, post }: Props) => {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton width={"100%"} height={100} count={1} />;
   }
 
   if (error) {
-    return <div>An error has occurred: {error.message}</div>;
+    return <ErrorPostCard error={error} />;
   }
 
   return (

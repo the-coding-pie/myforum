@@ -11,11 +11,12 @@ interface Props {
 }
 
 const AuthLayout: React.FC<Props> = ({ children, title }) => {
-  const { refreshToken } = useSelector((state: RootState) => state.auth);
+  const { accessToken, refreshToken } = useSelector((state: RootState) => state.auth);
 
-  if (refreshToken) {
+  if (accessToken || refreshToken) {
     return <Redirect to="/" />;
   }
+  
   return (
     <AuthWrapper>
       <img className="banner" src={AuthBanner} alt="auth banner" />

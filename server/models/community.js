@@ -36,11 +36,6 @@ const communitySchema = new mongoose.Schema({
   },
 });
 
-// methods
-communitySchema.methods.getSubscribersCount = async function () {
-  return this.subscribers.length;
-};
-
 const Community = mongoose.model("Community", communitySchema);
 
 export default Community;

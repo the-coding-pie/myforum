@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import Skeleton from "react-loading-skeleton";
 import { useQuery } from "react-query";
 import { UserDetailObj } from "../../types";
 import { BASE_URL } from "../../types/constants";
@@ -24,11 +25,48 @@ const UserCard = ({ username }: Props) => {
   } = useQuery<UserDetailObj, any>([`getUser/${username}`], getThisUser);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <UserCardWrapper>
+        <div className="top">
+          <h3>u/___</h3>
+        </div>
+        <Skeleton height="70px" />
+      </UserCardWrapper>
+    );
   }
 
   if (error) {
-    return <div>An error has occurred: {error.message}</div>;
+    let text = "";
+
+    switch (error.response.status) {
+      case 400:
+        text = "Bad Request: 400";
+        break;
+      case 404:
+        text = "Resource Not Found: 404";
+        break;
+      default:
+        text = "Oops, something went wrong";
+    }
+
+    return (
+      <UserCardWrapper>
+        <div className="top">
+          <h3>u/___</h3>
+        </div>
+        <UserBody>
+          <div
+            className="error-side-box"
+            style={{
+              color: "#be2a2a",
+              textAlign: "center",
+            }}
+          >
+            {text}
+          </div>
+        </UserBody>
+      </UserCardWrapper>
+    );
   }
 
   return (

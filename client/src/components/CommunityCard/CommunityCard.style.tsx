@@ -16,6 +16,12 @@ export const CommunityCardWrapper = styled.div`
   }
 `;
 
+export const CommunityCardBody = styled.div`
+  background: #ffffff;
+  padding: 0.5rem 0.5rem 1rem 0.5rem;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+`;
+
 export const CommunityList = styled.ul`
   display: flex;
   flex-direction: column;

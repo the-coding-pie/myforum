@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SortDropdownSelect,
   SortDropdownWrapper,
@@ -10,6 +10,7 @@ import { BASE_URL, SortOptions } from "../../types/constants";
 import axios from "axios";
 import Posts from "../../components/Posts/Posts";
 import { useLocation } from "react-router";
+import NoPosts from "../../components/NoPosts/NoPosts";
 
 const Search = () => {
   const query = new URLSearchParams(useLocation().search);
@@ -29,7 +30,9 @@ const Search = () => {
     data: posts,
     isLoading,
     error,
-  } = useQuery([`search`, q as string, currentSort as string], searchPosts);
+  } = useQuery([`search`, q as string, currentSort as string], searchPosts, {
+    enabled: q ? true : false,
+  });
 
   return (
     <div>
@@ -51,7 +54,7 @@ const Search = () => {
             <Posts {...{ isLoading, error, posts }} />
           </div>
         ) : (
-          "Oops, nothing found!"
+          <NoPosts msg="Query is required! Eg: /search?q=blah" />
         )}
       </GridLayoutWrapper>
     </div>

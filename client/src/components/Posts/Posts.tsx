@@ -1,6 +1,9 @@
 import React from "react";
 import { Post } from "../../types";
 import PostCard from "../PostCard/PostCard";
+import Skeleton from "react-loading-skeleton";
+import NoPosts from "../NoPosts/NoPosts";
+import ErrorPostCard from "../ErrorPostCard/ErrorPostCard";
 
 interface Props {
   isLoading: boolean;
@@ -10,11 +13,11 @@ interface Props {
 
 const Posts = ({ isLoading, error, posts }: Props) => {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton width={"100%"} height={100} count={3} />;
   }
 
   if (error) {
-    return <div>An error has occurred: {error.message}</div>;
+    return <ErrorPostCard error={error} />;
   }
 
   return (
@@ -22,7 +25,7 @@ const Posts = ({ isLoading, error, posts }: Props) => {
       {posts.length > 0 ? (
         posts.map((post) => <PostCard key={post._id} {...post} />)
       ) : (
-        <p>Oops, no posts found!</p>
+        <NoPosts msg="Oops, nothing found!" />
       )}
     </>
   );

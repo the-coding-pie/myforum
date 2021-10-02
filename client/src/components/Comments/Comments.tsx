@@ -1,9 +1,12 @@
 import axios from "axios";
 import React from "react";
+import Skeleton from "react-loading-skeleton";
 import { useQuery } from "react-query";
 import { CommentObj } from "../../types";
 import { BASE_URL } from "../../types/constants";
 import CommentCard from "../CommentCard/CommentCard";
+import ErrorPostCard from "../ErrorPostCard/ErrorPostCard";
+import NoPosts from "../NoPosts/NoPosts";
 
 interface Props {
   id: string;
@@ -23,11 +26,13 @@ const Comments = ({ id }: Props) => {
   } = useQuery<CommentObj[], any>(`getComments/${id}`, getComments);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton width={"100%"} style={{
+      marginTop: "1rem"
+    }} height={68} count={3} />;
   }
 
   if (error) {
-    return <div>An error has occurred: {error.message}</div>;
+    return <ErrorPostCard error={error} />;
   }
 
   return (
@@ -37,7 +42,7 @@ const Comments = ({ id }: Props) => {
           <CommentCard key={comment._id} {...comment} postId={id} />
         ))
       ) : (
-        <p>No comments yet!</p>
+        <NoPosts msg="No Comments yet!" />
       )}
     </>
   );
