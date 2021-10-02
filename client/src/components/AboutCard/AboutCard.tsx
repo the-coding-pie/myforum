@@ -5,9 +5,10 @@ import { RootState } from "../../app/store";
 import { addToast } from "../../features/toastSlice";
 import { CommunityDetailObj } from "../../types";
 import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
-import { getDate, getMDY } from "../../utils/helpers";
+import { getMDY } from "../../utils/helpers";
 import { Button } from "../shared/Button.style";
 import { AboutBody, AboutCardWrapper } from "./AboutCard.style";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   name: string;
@@ -55,6 +56,7 @@ const AboutCard = ({ name }: Props) => {
 
         dispatch(
           addToast({
+            id: uuidv4(),
             kind: SUCCESS,
             msg,
           })
@@ -69,6 +71,7 @@ const AboutCard = ({ name }: Props) => {
             case 404:
               dispatch(
                 addToast({
+                  id: uuidv4(),
                   kind: ERROR,
                   msg: response.data.message,
                 })
@@ -77,6 +80,7 @@ const AboutCard = ({ name }: Props) => {
             default:
               dispatch(
                 addToast({
+                  id: uuidv4(),
                   kind: ERROR,
                   msg: "Oops, something went wrong! Try reload...",
                 })
@@ -86,6 +90,7 @@ const AboutCard = ({ name }: Props) => {
         } catch (e) {
           dispatch(
             addToast({
+              id: uuidv4(),
               kind: ERROR,
               msg: "Oops, something went wrong!",
             })

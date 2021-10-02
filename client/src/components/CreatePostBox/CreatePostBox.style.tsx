@@ -5,6 +5,11 @@ export const RootWrapper = styled.div`
     margin-bottom: 0.8rem;
     font-size: ${({ theme }) => theme.fontSize.base};
   }
+
+  div.error {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const CreatePostBoxWrapper = styled.div`
@@ -16,10 +21,13 @@ export const CreatePostBoxWrapper = styled.div`
 `;
 
 export const ChooseButtons = styled.div`
+  margin-bottom: 1rem;
+`;
+
+export const Buttons = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
 `;
 
 export const ChooseButton = styled.button<{ active?: boolean }>`
@@ -46,6 +54,10 @@ export const FormGroup = styled.div`
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+
+  p {
+    margin-top: 0.5rem;
+  }
 
   label {
     text-transform: uppercase;

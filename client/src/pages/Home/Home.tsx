@@ -35,7 +35,7 @@ const Home = () => {
     data: posts,
     isLoading,
     error,
-  } = useQuery([`getPost?sortBy=${currentSort}`, currentSort], getPosts);
+  } = useQuery([`getPosts`, currentSort], getPosts);
 
   return (
     <GridLayoutWrapper>

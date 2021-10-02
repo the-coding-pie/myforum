@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addToast } from "./features/toastSlice";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { v4 as uuidv4 } from 'uuid';
 
 const theme: DefaultTheme = {
   fonts: {
@@ -83,6 +84,7 @@ axios.interceptors.response.use(
     ) {
       store.dispatch(
         addToast({
+          id: uuidv4(),
           kind: ERROR,
           msg: "Token expired!",
         })

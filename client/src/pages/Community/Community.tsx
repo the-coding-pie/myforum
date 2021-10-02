@@ -46,10 +46,7 @@ const Community = () => {
     data: posts,
     isLoading,
     error,
-  } = useQuery(
-    [`getPost?sortBy=${currentSort}&comm=${name}`, currentSort],
-    getCommunityPosts
-  );
+  } = useQuery([`getCommunityPosts/${name}`, currentSort], getCommunityPosts);
 
   return (
     <div>

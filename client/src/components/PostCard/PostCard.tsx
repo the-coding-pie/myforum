@@ -1,5 +1,11 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams, useHistory, Link } from "react-router-dom";
+import { RootState } from "../../app/store";
+import { addToast } from "../../features/toastSlice";
 import { Post } from "../../types";
+import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
 import { getDate } from "../../utils/helpers";
 import {
   PostCardBottom,
@@ -7,6 +13,9 @@ import {
   PostCardRight,
   PostCardWrapper,
 } from "./PostCard.style";
+import { v4 as uuidv4 } from "uuid";
+import { useQueryClient } from "react-query";
+import { DeleteBtn } from "../shared/DeleteBtn.style";
 
 const PostCard = ({
   _id,
@@ -17,6 +26,92 @@ const PostCard = ({
   author,
   postedAt,
 }: Post) => {
+  const { pathname } = useLocation();
+  const params = useParams<any>();
+  const history = useHistory();
+  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
+  const handleDelete = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+
+      axios
+        .delete(`${BASE_URL}/posts/${_id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          const msg = response.data.message;
+
+          dispatch(
+            addToast({
+              id: uuidv4(),
+              kind: SUCCESS,
+              msg,
+            })
+          );
+
+          // act accordingly
+          // if / or /u/:username or /c/:name -> refetch
+          // if /posts/:id, redirect
+          if (pathname.includes("/u")) {
+            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+          }
+
+          if (pathname === "/") {
+            queryClient.invalidateQueries("getPosts");
+          }
+
+          if (pathname.includes("/c/")) {
+            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+          }
+
+          if (pathname.includes("/posts")) {
+            history.push("/");
+          }
+        })
+        .catch(({ response }) => {
+          try {
+            switch (response.status) {
+              case 400:
+              case 403:
+              case 404:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: response.data.message,
+                  })
+                );
+                break;
+              default:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: "Oops, something went wrong! Try reload...",
+                  })
+                );
+                break;
+            }
+          } catch (e) {
+            dispatch(
+              addToast({
+                id: uuidv4(),
+                kind: ERROR,
+                msg: "Oops, something went wrong!",
+              })
+            );
+          }
+        });
+    },
+    []
+  );
+
   return (
     <PostCardWrapper>
       <PostCardLeft>
@@ -54,9 +149,16 @@ const PostCard = ({
         </button>
       </PostCardLeft>
       <PostCardRight>
-        <h3>
-          <Link to={`/posts/${_id}`}>{title}</Link>
-        </h3>
+        <div className="top">
+          <h3>
+            <Link to={`/posts/${_id}`}>
+              {title.length > 30 ? title.slice(0, 30) + "..." : title}
+            </Link>
+          </h3>
+          {user?._id === author._id && (
+            <DeleteBtn onClick={handleDelete}>delete</DeleteBtn>
+          )}
+        </div>
 
         <p>{content.length > 20 ? content.slice(0, 20) + "..." : content}</p>
 

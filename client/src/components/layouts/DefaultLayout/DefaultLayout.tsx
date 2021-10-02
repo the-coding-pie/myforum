@@ -10,6 +10,7 @@ import User from "../../../pages/User/User";
 import Navbar from "../../Navbar/Navbar";
 
 const DefaultLayout = () => {
+
   return (
     <div>
       <Navbar />

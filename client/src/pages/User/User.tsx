@@ -31,7 +31,7 @@ const User = () => {
     isLoading,
     error,
   } = useQuery(
-    [`getUsersPosts?sortBy=${currentSort}`, currentSort],
+    [`getUsersPosts/${username}`, currentSort],
     getUsersPosts
   );
 

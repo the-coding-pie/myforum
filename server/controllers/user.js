@@ -103,11 +103,11 @@ export const getUsersPosts = async (req, res) => {
       .sort(sort)
       .populate({
         path: "author",
-        select: "username -_id",
+        select: "username _id",
       })
       .populate({
         path: "community",
-        select: "name -_id",
+        select: "name _id",
       })
       .populate({
         path: "comments",

@@ -40,6 +40,13 @@ export const PostCardRight = styled.div`
   flex: 7 7;
   display: flex;
   flex-direction: column;
+  padding-right: 0.5rem;
+
+  .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 
   & h3 {
     margin-bottom: 0.2rem;

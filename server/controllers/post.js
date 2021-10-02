@@ -1,4 +1,5 @@
 import Community from "../models/community";
+import Comment from "../models/comment";
 import Post from "../models/post";
 import mongoose from "mongoose";
 import _ from "lodash";
@@ -40,11 +41,11 @@ export const getPosts = async (req, res) => {
         .sort(sort)
         .populate({
           path: "author",
-          select: "username -_id",
+          select: "username _id",
         })
         .populate({
           path: "community",
-          select: "name -_id",
+          select: "name _id",
         })
         .populate({
           path: "comments",
@@ -102,11 +103,11 @@ export const getPosts = async (req, res) => {
         .sort(sort)
         .populate({
           path: "author",
-          select: "username -_id",
+          select: "username _id",
         })
         .populate({
           path: "community",
-          select: "name -_id",
+          select: "name _id",
         })
         .populate({
           path: "comments",
@@ -155,11 +156,11 @@ export const getPosts = async (req, res) => {
       .sort(sort)
       .populate({
         path: "author",
-        select: "username",
+        select: "username _id",
       })
       .populate({
         path: "community",
-        select: "name",
+        select: "name _id",
       })
       .populate({
         path: "comments",
@@ -239,11 +240,11 @@ export const getPost = async (req, res) => {
     })
       .populate({
         path: "author",
-        select: "username -_id",
+        select: "username _id",
       })
       .populate({
         path: "community",
-        select: "name -_id",
+        select: "name _id",
       })
       .populate({
         path: "comments",
@@ -445,6 +446,8 @@ export const deletePost = async (req, res) => {
       });
     }
 
+    // get all the comments
+    await Comment.remove({ post });
     await post.remove();
 
     return res.send({

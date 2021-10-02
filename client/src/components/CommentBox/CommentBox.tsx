@@ -7,6 +7,7 @@ import { addToast } from "../../features/toastSlice";
 import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
 import { Button } from "../shared/Button.style";
 import { CommentBoxWrapper } from "./CommentBox.style";
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
   postId: string;
@@ -39,6 +40,7 @@ const CommentBox = ({ postId }: Props) => {
 
         dispatch(
           addToast({
+            id: uuidv4(),
             kind: SUCCESS,
             msg,
           })
@@ -57,6 +59,7 @@ const CommentBox = ({ postId }: Props) => {
             case 404:
               dispatch(
                 addToast({
+                  id: uuidv4(),
                   kind: ERROR,
                   msg: response.data.message,
                 })
@@ -65,6 +68,7 @@ const CommentBox = ({ postId }: Props) => {
             default:
               dispatch(
                 addToast({
+                  id: uuidv4(),
                   kind: ERROR,
                   msg: "Oops, something went wrong! Try reload...",
                 })
@@ -74,6 +78,7 @@ const CommentBox = ({ postId }: Props) => {
         } catch (e) {
           dispatch(
             addToast({
+              id: uuidv4(),
               kind: ERROR,
               msg: "Oops, something went wrong!",
             })

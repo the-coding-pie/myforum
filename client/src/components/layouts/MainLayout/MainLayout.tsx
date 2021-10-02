@@ -6,6 +6,7 @@ import DefaultLayout from "../DefaultLayout/DefaultLayout";
 import { BASE_URL, ERROR } from "../../../types/constants";
 import { logoutUser, setCurrentUser } from "../../../features/authSlice";
 import { addToast } from "../../../features/toastSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const MainLayout = () => {
   // this layout is just for deciding whether to show admin panel or normal screen, if exists
@@ -35,6 +36,7 @@ const MainLayout = () => {
             default:
               dispatch(
                 addToast({
+                  id: uuidv4(),
                   kind: ERROR,
                   msg: "Oops, something went wrong! Try reload...",
                 })
@@ -44,6 +46,7 @@ const MainLayout = () => {
         } catch (e) {
           dispatch(
             addToast({
+              id: uuidv4(),
               kind: ERROR,
               msg: "Oops, something went wrong!",
             })

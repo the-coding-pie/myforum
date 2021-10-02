@@ -17,9 +17,11 @@ export interface Post {
   content: string;
   kind: "text" | "link";
   community: {
+    _id: string;
     name: string;
   };
   author: {
+    _id: string;
     username: string;
   };
   comments: number;
@@ -29,6 +31,7 @@ export interface Post {
 
 // toast
 export interface ToastObj {
+  id: string;
   kind:
     | typeof ERROR
     | typeof SUCCESS
