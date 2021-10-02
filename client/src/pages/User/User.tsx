@@ -9,7 +9,6 @@ import {
   SortDropdownWrapper,
 } from "../../components/shared/SortDropdown.style";
 import UserCard from "../../components/UserCard/UserCard";
-import posts from "../../posts.json";
 import { BASE_URL, SortOptions } from "../../types/constants";
 
 const User = () => {
