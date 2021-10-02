@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router";
 import { SearchBoxWrapper } from "./SearchBox.style";
 
 const SearchBox = () => {
   const history = useHistory();
+  const { pathname } = useLocation();
   const [query, setQuery] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -11,6 +12,12 @@ const SearchBox = () => {
 
     query !== "" && history.push(`/search/?q=${query}`);
   };
+
+  useEffect(() => {
+    if (!pathname.includes("/search")) {
+      setQuery("");
+    }
+  }, [pathname]);
 
   return (
     <SearchBoxWrapper>

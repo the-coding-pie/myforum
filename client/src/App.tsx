@@ -11,7 +11,6 @@ import { BASE_URL, ERROR } from "./types/constants";
 import Toasts from "./components/Toasts/Toasts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
 import { addToast } from "./features/toastSlice";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { v4 as uuidv4 } from 'uuid';
@@ -102,7 +101,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <div>
         <Toasts />
-        <ToastContainer position="bottom-left" />
+        <ToastContainer position="bottom-center" />
 
         <Router>
           <ThemeProvider theme={theme}>

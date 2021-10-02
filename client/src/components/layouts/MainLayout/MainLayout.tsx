@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import DefaultLayout from "../DefaultLayout/DefaultLayout";
 import { BASE_URL, ERROR } from "../../../types/constants";
-import { logoutUser, setCurrentUser } from "../../../features/authSlice";
+import { setCurrentUser } from "../../../features/authSlice";
 import { addToast } from "../../../features/toastSlice";
 import { v4 as uuidv4 } from "uuid";
 

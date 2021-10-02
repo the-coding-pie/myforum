@@ -100,6 +100,21 @@ const CreatePostBox = () => {
           })
         );
 
+        setPost({
+          title: "",
+          content: "",
+          kind: "text",
+          community: "",
+        });
+
+        setErrors({
+          title: "",
+          content: "",
+          kind: "",
+          community: "",
+          common: "",
+        });
+
         // redirect him to the /
         history.push("/");
       })
@@ -246,7 +261,11 @@ const CreatePostBox = () => {
             >
               {communities.length > 0 &&
                 communities.map((c) => {
-                  return <option key={c._id} value={c.name}>c/{c.name}</option>;
+                  return (
+                    <option key={c._id} value={c.name}>
+                      c/{c.name}
+                    </option>
+                  );
                 })}
             </select>
             {errors.community && <ErrorText>{errors.community}</ErrorText>}

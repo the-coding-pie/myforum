@@ -40,21 +40,3 @@ const PostDetail = () => {
 };
 
 export default PostDetail;
-
-{
-  /* <div>
-{posts.length > 0 ? (
-  <>
-    {/* <PostCard {...posts[0]} /> */
-}
-//     <CommentBox />
-
-//     {comments.length > 0 && comments.map((c) => <CommentCard {...c} />)}
-//   </>
-// ) : (
-//   <p>Oops, no posts found!</p>
-// )}
-// </div>
-{
-  /* <PostCommunityCard /> */
-}

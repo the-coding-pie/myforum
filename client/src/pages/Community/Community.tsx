@@ -5,12 +5,6 @@ import {
   SortDropdownSelect,
   SortDropdownWrapper,
 } from "../../components/shared/SortDropdown.style";
-import {
-  CommunityBanner,
-  CommunityLeft,
-  CommunityRight,
-} from "./Community.style";
-import { Button } from "../../components/shared/Button.style";
 import AboutCard from "../../components/AboutCard/AboutCard";
 import { BASE_URL, SortOptions } from "../../types/constants";
 import axios from "axios";

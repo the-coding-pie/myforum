@@ -1,4 +1,4 @@
-import styled, { DefaultTheme, StyledComponent } from "styled-components";
+import styled from "styled-components";
 
 interface Props {
   light?: boolean;

@@ -2,8 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import CommunityCard from "../../components/CommunityCard/CommunityCard";
-import PostCard from "../../components/PostCard/PostCard";
 import Posts from "../../components/Posts/Posts";
 import { GridLayoutWrapper } from "../../components/shared/GridLayout.style";
 import {

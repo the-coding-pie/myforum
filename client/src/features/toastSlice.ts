@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ToastObj } from "../types";
-import { DEFAULT, ERROR, SUCCESS, WARNING } from "../types/constants";
 import * as _ from "lodash";
 
 interface ToastState {

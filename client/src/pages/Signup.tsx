@@ -46,8 +46,6 @@ const Signup = () => {
           }
         )
         .then((response) => {
-          const data = response.data;
-
           // empty errors
           setErrors({ username: "", email: "", password: "", common: "" });
           setInputs({ username: "", email: "", password: "" });

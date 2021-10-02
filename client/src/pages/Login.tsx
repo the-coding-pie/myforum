@@ -16,8 +16,6 @@ import { BASE_URL } from "../types/constants";
 import { isValid } from "../utils/helpers";
 
 const Login = () => {
-  const history = useHistory();
-
   const [inputs, setInputs] = useState({
     email: "",
     password: "",

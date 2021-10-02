@@ -56,7 +56,7 @@ const PostCard = ({
           );
 
           // act accordingly
-          // if / or /u/:username or /c/:name -> refetch
+          // if / or /u/:username or /c/:name or /search -> refetch
           // if /posts/:id, redirect
           if (pathname.includes("/u")) {
             queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
@@ -64,6 +64,10 @@ const PostCard = ({
 
           if (pathname === "/") {
             queryClient.invalidateQueries("getPosts");
+          }
+
+          if (pathname.includes("/search")) {
+            queryClient.invalidateQueries(`search`);
           }
 
           if (pathname.includes("/c/")) {

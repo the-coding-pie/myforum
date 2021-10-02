@@ -1,10 +1,9 @@
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
-import { CommentObj, Post } from "../../types";
+import { CommentObj } from "../../types";
 import { BASE_URL } from "../../types/constants";
 import CommentCard from "../CommentCard/CommentCard";
-import PostCard from "../PostCard/PostCard";
 
 interface Props {
   id: string;
