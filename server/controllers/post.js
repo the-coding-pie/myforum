@@ -447,7 +447,7 @@ export const deletePost = async (req, res) => {
     }
 
     // get all the comments
-    await Comment.remove({ post });
+    await Comment.deleteMany({ post });
     await post.remove();
 
     return res.send({

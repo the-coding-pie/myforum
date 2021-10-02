@@ -189,7 +189,7 @@ export const deleteComment = async (req, res) => {
       });
     }
 
-    await comment.remove();
+    await Comment.deleteOne({ _id: id });
 
     return res.send({
       success: true,
