@@ -189,7 +189,10 @@ export const deleteComment = async (req, res) => {
       });
     }
 
+    const p = await Post.findOne({ _id: comment.post._id });
+
     await Comment.deleteOne({ _id: id });
+    p.update({ $pull: { comments: comment } });
 
     return res.send({
       success: true,

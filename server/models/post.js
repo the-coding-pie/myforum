@@ -28,13 +28,34 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   comments: {
-    type: [mongoose.ObjectId],
-    ref: "Comment",
+    type: [
+      {
+        type: mongoose.ObjectId,
+        ref: "Comment",
+        required: true,
+      },
+    ],
     default: [],
   },
-  votes: {
-    type: Number,
-    default: 0,
+  upVoters: {
+    type: [
+      {
+        type: mongoose.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
+    default: [],
+  },
+  downVoters: {
+    type: [
+      {
+        type: mongoose.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
+    default: [],
   },
   postedAt: {
     type: Date,

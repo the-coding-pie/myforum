@@ -4,6 +4,7 @@ import Post from "../models/post";
 import mongoose from "mongoose";
 import _ from "lodash";
 import validator from "validator";
+import { User } from "../models/user";
 
 // GET /posts
 export const getPosts = async (req, res) => {
@@ -465,3 +466,71 @@ export const deletePost = async (req, res) => {
     });
   }
 };
+
+// /posts/:id/upvote
+export const upVote = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Id is required",
+        statusCode: 400,
+      });
+    }
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid Id",
+        statusCode: 400,
+      });
+    }
+
+    const post = await Post.findOne({
+      _id: id,
+    });
+
+    if (!post) {
+      return res.status(404).send({
+        success: false,
+        data: {},
+        message: "No post with that id found",
+        statusCode: 404,
+      });
+    }
+
+    const upVoters = post.upVoters.map((v) => v._id);
+    const user = await User.findOne({ _id: req.user._id });
+
+    // check if user already in downVoters, if true then remove
+    post.update({ $pull: { downVoters: user } });
+
+    // if already on upVoters, remove or add
+    if (upVoters.includes(req.user._id)) {
+      post.update({ $pull: { upVoters: user } });
+    } else {
+      console.log("upvoted");
+      post.update({ $push: { upVoters: user } });
+    }
+
+    res.send({
+      success: true,
+      data: {},
+      message: `Post with the id ${post._id} updated successfully`,
+      statusCode: 200,
+    });
+  } catch {
+    res.status(500).send({
+      success: false,
+      data: {},
+      message: "Oops, something went wrong!",
+      statusCode: 500,
+    });
+  }
+};
+
+// /posts/:id/downvote
