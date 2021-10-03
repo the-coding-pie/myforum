@@ -66,10 +66,15 @@ const AboutCard = ({ name }: Props) => {
           <h3>About Community</h3>
         </div>
         <AboutBody>
-        <div className="error-side-box" style={{
-          color: "#be2a2a",
-          textAlign: "center"
-        }}>{text}</div>
+          <div
+            className="error-side-box"
+            style={{
+              color: "#be2a2a",
+              textAlign: "center",
+            }}
+          >
+            {text}
+          </div>
         </AboutBody>
       </AboutCardWrapper>
     );
@@ -81,11 +86,15 @@ const AboutCard = ({ name }: Props) => {
     e.preventDefault();
 
     axios
-      .put(`${BASE_URL}/communities/${name}/subscribers`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .put(
+        `${BASE_URL}/communities/${name}/subscribers`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         const msg = response.data.message;
 

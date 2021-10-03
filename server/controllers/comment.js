@@ -46,7 +46,7 @@ export const getComments = async (req, res) => {
       .populate({
         path: "commentator",
         select: "username _id",
-      })
+      });
 
     res.send({
       success: true,
@@ -192,7 +192,10 @@ export const deleteComment = async (req, res) => {
     const p = await Post.findOne({ _id: comment.post._id });
 
     await Comment.deleteOne({ _id: id });
-    p.update({ $pull: { comments: comment } });
+    await Post.updateOne(
+      { _id: p._id },
+      { $pull: { comments: { $in: [comment] } } }
+    );
 
     return res.send({
       success: true,

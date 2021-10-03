@@ -12,32 +12,34 @@ export const checkTokens = (): boolean => {
       return false;
     }
 
-    // first check, if you have a valid refresh_token
+    // first check, if you have a valid access_token
     // decode the token
-    const rtoken = jwt.decode(refresh_token as string) as JwtPayload;
+    const atoken = jwt.decode(access_token as string) as JwtPayload;
     let exp = null;
 
-    if (rtoken && rtoken?.exp) {
-      exp = rtoken.exp;
+    if (atoken && atoken?.exp) {
+      exp = atoken.exp;
     }
 
     // if no exp date or expired exp date
     if (!exp || exp < new Date().getTime() / 1000) {
-      // invalid refresh_token
-      // now check for access_token
-      const atoken = jwt.decode(access_token as string) as JwtPayload;
+      // invalid access_token
+      // now check for refresh_token
+      const rtoken = jwt.decode(refresh_token as string) as JwtPayload;
       let exp = null;
 
-      if (atoken && atoken?.exp) {
-        exp = atoken.exp;
+      if (rtoken && rtoken?.exp) {
+        exp = rtoken.exp;
       }
 
       // if no exp date or expired exp date
       if (!exp || exp < new Date().getTime() / 1000) {
+        console.log("n");
         return false;
       }
     }
 
+    console.log("y");
     // valid token
     return true;
   } catch (e) {

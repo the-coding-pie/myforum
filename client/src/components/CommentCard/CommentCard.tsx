@@ -94,7 +94,7 @@ const CommentCard = ({
     <CommentCardWrapper>
       <CommentCardTop>
         <div>
-          <Link to={`/${commentator.username}`}>{commentator.username}</Link>
+          <Link to={`/u/${commentator.username}`}>{commentator.username}</Link>
           <time>{getDate(postedAt)}</time>
         </div>
         {user?._id === commentator._id && (

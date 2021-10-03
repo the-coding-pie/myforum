@@ -73,9 +73,11 @@ export const getPosts = async (req, res) => {
           upVoters,
           downVoters,
           postedAt,
+          votes,
         } = p;
 
         comments = p.comments.length;
+
         return {
           _id,
           title,
@@ -87,6 +89,7 @@ export const getPosts = async (req, res) => {
           upVoters,
           downVoters,
           postedAt,
+          votes,
         };
       });
 
@@ -145,9 +148,11 @@ export const getPosts = async (req, res) => {
           upVoters,
           downVoters,
           postedAt,
+          votes,
         } = p;
 
         comments = p.comments.length;
+
         return {
           _id,
           title,
@@ -159,6 +164,7 @@ export const getPosts = async (req, res) => {
           upVoters,
           downVoters,
           postedAt,
+          votes,
         };
       });
 
@@ -208,9 +214,11 @@ export const getPosts = async (req, res) => {
         upVoters,
         downVoters,
         postedAt,
+        votes,
       } = p;
 
       comments = p.comments.length;
+
       return {
         _id,
         title,
@@ -222,6 +230,7 @@ export const getPosts = async (req, res) => {
         upVoters,
         downVoters,
         postedAt,
+        votes,
       };
     });
 
@@ -310,6 +319,7 @@ export const getPost = async (req, res) => {
       upVoters,
       downVoters,
       postedAt,
+      votes,
     } = post;
 
     comments = post.comments.length;
@@ -327,6 +337,7 @@ export const getPost = async (req, res) => {
         upVoters,
         downVoters,
         postedAt,
+        votes,
       },
       message: "",
       statusCode: 200,
@@ -556,6 +567,8 @@ export const upVote = async (req, res) => {
         { $pull: { downVoters: { $in: [user._id] } } }
       );
       vote = "removed downVote";
+
+      post.votes = post.votes + 1;
     }
 
     // if already on upVoters, remove or add
@@ -565,11 +578,14 @@ export const upVote = async (req, res) => {
         { _id: post._id },
         { $pull: { upVoters: { $in: [user._id] } } }
       );
+      post.votes = post.votes - 1;
     } else {
       vote = "upvoted";
       await post.upVoters.push(user);
-      await post.save();
+      post.votes = post.votes + 1;
     }
+
+    await post.save();
 
     res.send({
       success: true,
@@ -636,6 +652,8 @@ export const downVote = async (req, res) => {
         { $pull: { upVoters: { $in: [user._id] } } }
       );
       vote = "removed upVote";
+
+      post.votes = post.votes - 1;
     }
 
     // if already on downVoters, remove or add
@@ -645,11 +663,14 @@ export const downVote = async (req, res) => {
         { _id: post._id },
         { $pull: { downVoters: { $in: [user._id] } } }
       );
+      post.votes = post.votes + 1;
     } else {
       vote = "downVoted";
       await post.downVoters.push(user);
-      await post.save();
+      post.votes = post.votes - 1;
     }
+
+    await post.save();
 
     res.send({
       success: true,

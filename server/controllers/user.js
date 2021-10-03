@@ -134,9 +134,11 @@ export const getUsersPosts = async (req, res) => {
         upVoters,
         downVoters,
         postedAt,
+        votes,
       } = p;
 
       comments = p.comments.length;
+
       return {
         _id,
         title,
@@ -148,6 +150,7 @@ export const getUsersPosts = async (req, res) => {
         upVoters,
         downVoters,
         postedAt,
+        votes,
       };
     });
 

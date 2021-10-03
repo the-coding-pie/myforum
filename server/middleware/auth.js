@@ -1,11 +1,9 @@
 import jwt from "jsonwebtoken";
 
 // authMiddleware which checks if there is a valid access token in each req
-export const authMiddleware = (req, res, next) => {
-  const header = req.headers["authorization"];
-  const token = header && header.split(" ")[1];
-
-  console.log(token)
+export const authMiddleware = async (req, res, next) => {
+  const header = await req.headers["authorization"];
+  const token = await header && header.split(" ")[1];
 
   if (!token) {
     return res.status(401).send({

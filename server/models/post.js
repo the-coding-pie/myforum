@@ -57,6 +57,10 @@ const postSchema = new mongoose.Schema({
     ],
     default: [],
   },
+  votes: {
+    type: Number,
+    default: 0,
+  },
   postedAt: {
     type: Date,
     default: Date.now,

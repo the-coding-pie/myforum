@@ -38,7 +38,9 @@ const Navbar = () => {
                 {user && (
                   <li>
                     <NavLink to={`/u/${user.username}`}>
-                      {user.username}
+                      {user.username.length > 8
+                        ? user.username.slice(0, 8) + "..."
+                        : user.username}
                     </NavLink>
                   </li>
                 )}

@@ -27,6 +27,7 @@ const PostCard = ({
   downVoters,
   author,
   postedAt,
+  votes,
 }: Post) => {
   const { pathname } = useLocation();
   const params = useParams<any>();
@@ -125,11 +126,15 @@ const PostCard = ({
       e.preventDefault();
 
       axios
-        .post(`${BASE_URL}/posts/${_id}/upvote`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
+        .post(
+          `${BASE_URL}/posts/${_id}/upvote`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
         .then((response) => {
           // act accordingly
           // if / or /u/:username or /c/:name or /search -> refetch
@@ -196,11 +201,15 @@ const PostCard = ({
       e.preventDefault();
 
       axios
-        .post(`${BASE_URL}/posts/${_id}/downvote`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
+        .post(
+          `${BASE_URL}/posts/${_id}/downvote`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
         .then((response) => {
           // act accordingly
           // if / or /u/:username or /c/:name or /search -> refetch
@@ -289,7 +298,7 @@ const PostCard = ({
           </svg>
         </button>
 
-        <span className="votes">{upVoters.length + downVoters.length}</span>
+        <span className="votes">{votes}</span>
 
         <button
           disabled={!accessToken && !refreshToken}
