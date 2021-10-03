@@ -20,6 +20,8 @@ export interface Post {
     _id: string;
     name: string;
   };
+  upVoters: [{ _id: string }];
+  downVoters: [{ _id: string }];
   author: {
     _id: string;
     username: string;

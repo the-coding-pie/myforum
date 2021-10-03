@@ -46,7 +46,7 @@ export const getComments = async (req, res) => {
       .populate({
         path: "commentator",
         select: "username _id",
-      });
+      })
 
     res.send({
       success: true,

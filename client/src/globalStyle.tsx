@@ -33,8 +33,20 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   ul {
     list-style-type: none;
+  }
+
+  .active-upvote-btn {
+    color: red;
+  }
+
+  .active-downvote-btn {
+    color: blue;
   }
 `;
 

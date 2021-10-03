@@ -112,6 +112,14 @@ export const getUsersPosts = async (req, res) => {
       .populate({
         path: "comments",
         select: "_id",
+      })
+      .populate({
+        path: "upVoters",
+        select: "_id",
+      })
+      .populate({
+        path: "downVoters",
+        select: "_id",
       });
 
     posts = await posts.map((p) => {
@@ -123,7 +131,8 @@ export const getUsersPosts = async (req, res) => {
         community,
         comments,
         author,
-        votes,
+        upVoters,
+        downVoters,
         postedAt,
       } = p;
 
@@ -136,7 +145,8 @@ export const getUsersPosts = async (req, res) => {
         community,
         comments,
         author,
-        votes,
+        upVoters,
+        downVoters,
         postedAt,
       };
     });

@@ -5,6 +5,8 @@ export const authMiddleware = (req, res, next) => {
   const header = req.headers["authorization"];
   const token = header && header.split(" ")[1];
 
+  console.log(token)
+
   if (!token) {
     return res.status(401).send({
       success: false,

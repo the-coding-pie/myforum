@@ -23,13 +23,17 @@ const PostCard = ({
   content,
   comments,
   community,
+  upVoters,
+  downVoters,
   author,
   postedAt,
 }: Post) => {
   const { pathname } = useLocation();
   const params = useParams<any>();
   const history = useHistory();
-  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+  const { accessToken, refreshToken, user } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -116,10 +120,160 @@ const PostCard = ({
     []
   );
 
+  const handleUpvote = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+
+      axios
+        .post(`${BASE_URL}/posts/${_id}/upvote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          // act accordingly
+          // if / or /u/:username or /c/:name or /search -> refetch
+          // if /posts/:id, redirect
+          if (pathname.includes("/u")) {
+            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+          }
+
+          if (pathname === "/") {
+            queryClient.invalidateQueries("getPosts");
+          }
+
+          if (pathname.includes("/search")) {
+            queryClient.invalidateQueries(`search`);
+          }
+
+          if (pathname.includes("/c/")) {
+            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+          }
+
+          if (pathname.includes("/posts")) {
+            history.push("/");
+          }
+        })
+        .catch(({ response }) => {
+          try {
+            switch (response.status) {
+              case 400:
+              case 404:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: response.data.message,
+                  })
+                );
+                break;
+              default:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: "Oops, something went wrong! Try reload...",
+                  })
+                );
+                break;
+            }
+          } catch (e) {
+            dispatch(
+              addToast({
+                id: uuidv4(),
+                kind: ERROR,
+                msg: "Oops, something went wrong!",
+              })
+            );
+          }
+        });
+    },
+    []
+  );
+
+  const handleDownVote = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+
+      axios
+        .post(`${BASE_URL}/posts/${_id}/downvote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          // act accordingly
+          // if / or /u/:username or /c/:name or /search -> refetch
+          // if /posts/:id, redirect
+          if (pathname.includes("/u")) {
+            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+          }
+
+          if (pathname === "/") {
+            queryClient.invalidateQueries("getPosts");
+          }
+
+          if (pathname.includes("/search")) {
+            queryClient.invalidateQueries(`search`);
+          }
+
+          if (pathname.includes("/c/")) {
+            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+          }
+
+          if (pathname.includes("/posts")) {
+            history.push("/");
+          }
+        })
+        .catch(({ response }) => {
+          try {
+            switch (response.status) {
+              case 400:
+              case 404:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: response.data.message,
+                  })
+                );
+                break;
+              default:
+                dispatch(
+                  addToast({
+                    id: uuidv4(),
+                    kind: ERROR,
+                    msg: "Oops, something went wrong! Try reload...",
+                  })
+                );
+                break;
+            }
+          } catch (e) {
+            dispatch(
+              addToast({
+                id: uuidv4(),
+                kind: ERROR,
+                msg: "Oops, something went wrong!",
+              })
+            );
+          }
+        });
+    },
+    []
+  );
+
   return (
     <PostCardWrapper>
       <PostCardLeft>
-        <button>
+        <button
+          disabled={!accessToken && !refreshToken}
+          onClick={handleUpvote}
+          className={
+            upVoters.filter((v) => v._id === user?._id).length > 0
+              ? "active-upvote-btn"
+              : ""
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -134,9 +288,18 @@ const PostCard = ({
             />
           </svg>
         </button>
-        <span className="comments">{comments}</span>
 
-        <button>
+        <span className="votes">{upVoters.length + downVoters.length}</span>
+
+        <button
+          disabled={!accessToken && !refreshToken}
+          onClick={handleDownVote}
+          className={
+            downVoters.filter((v) => v._id === user?._id).length > 0
+              ? "active-downvote-btn"
+              : ""
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

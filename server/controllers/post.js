@@ -51,6 +51,14 @@ export const getPosts = async (req, res) => {
         .populate({
           path: "comments",
           select: "_id",
+        })
+        .populate({
+          path: "upVoters",
+          select: "_id",
+        })
+        .populate({
+          path: "downVoters",
+          select: "_id",
         });
 
       posts = await posts.map((p) => {
@@ -62,7 +70,8 @@ export const getPosts = async (req, res) => {
           community,
           comments,
           author,
-          votes,
+          upVoters,
+          downVoters,
           postedAt,
         } = p;
 
@@ -75,7 +84,8 @@ export const getPosts = async (req, res) => {
           community,
           comments,
           author,
-          votes,
+          upVoters,
+          downVoters,
           postedAt,
         };
       });
@@ -113,6 +123,14 @@ export const getPosts = async (req, res) => {
         .populate({
           path: "comments",
           select: "_id",
+        })
+        .populate({
+          path: "upVoters",
+          select: "_id",
+        })
+        .populate({
+          path: "downVoters",
+          select: "_id",
         });
 
       posts = await posts.map((p) => {
@@ -124,7 +142,8 @@ export const getPosts = async (req, res) => {
           community,
           comments,
           author,
-          votes,
+          upVoters,
+          downVoters,
           postedAt,
         } = p;
 
@@ -137,7 +156,8 @@ export const getPosts = async (req, res) => {
           community,
           comments,
           author,
-          votes,
+          upVoters,
+          downVoters,
           postedAt,
         };
       });
@@ -166,6 +186,14 @@ export const getPosts = async (req, res) => {
       .populate({
         path: "comments",
         select: "_id",
+      })
+      .populate({
+        path: "upVoters",
+        select: "_id",
+      })
+      .populate({
+        path: "downVoters",
+        select: "_id",
       });
 
     posts = await posts.map((p) => {
@@ -177,7 +205,8 @@ export const getPosts = async (req, res) => {
         community,
         comments,
         author,
-        votes,
+        upVoters,
+        downVoters,
         postedAt,
       } = p;
 
@@ -190,7 +219,8 @@ export const getPosts = async (req, res) => {
         community,
         comments,
         author,
-        votes,
+        upVoters,
+        downVoters,
         postedAt,
       };
     });
@@ -250,6 +280,14 @@ export const getPost = async (req, res) => {
       .populate({
         path: "comments",
         select: "_id",
+      })
+      .populate({
+        path: "upVoters",
+        select: "_id",
+      })
+      .populate({
+        path: "downVoters",
+        select: "_id",
       });
 
     if (!post) {
@@ -269,7 +307,8 @@ export const getPost = async (req, res) => {
       community,
       comments,
       author,
-      votes,
+      upVoters,
+      downVoters,
       postedAt,
     } = post;
 
@@ -285,7 +324,8 @@ export const getPost = async (req, res) => {
         community,
         comments,
         author,
-        votes,
+        upVoters,
+        downVoters,
         postedAt,
       },
       message: "",
@@ -504,23 +544,37 @@ export const upVote = async (req, res) => {
     }
 
     const upVoters = post.upVoters.map((v) => v._id);
+    const downVoters = post.downVoters.map((v) => v._id);
+
     const user = await User.findOne({ _id: req.user._id });
+    let vote = "";
 
     // check if user already in downVoters, if true then remove
-    post.update({ $pull: { downVoters: user } });
+    if (downVoters.filter((v) => _.isEqual(v._id, user._id)).length > 0) {
+      await Post.updateOne(
+        { _id: post._id },
+        { $pull: { downVoters: { $in: [user._id] } } }
+      );
+      vote = "removed downVote";
+    }
 
     // if already on upVoters, remove or add
-    if (upVoters.includes(req.user._id)) {
-      post.update({ $pull: { upVoters: user } });
+    if (upVoters.filter((v) => _.isEqual(v._id, user._id)).length > 0) {
+      vote = "removed upVote";
+      await Post.updateOne(
+        { _id: post._id },
+        { $pull: { upVoters: { $in: [user._id] } } }
+      );
     } else {
-      console.log("upvoted");
-      post.update({ $push: { upVoters: user } });
+      vote = "upvoted";
+      await post.upVoters.push(user);
+      await post.save();
     }
 
     res.send({
       success: true,
       data: {},
-      message: `Post with the id ${post._id} updated successfully`,
+      message: `Post with the id ${post._id} ${vote} successfully`,
       statusCode: 200,
     });
   } catch {
@@ -534,3 +588,81 @@ export const upVote = async (req, res) => {
 };
 
 // /posts/:id/downvote
+export const downVote = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Id is required",
+        statusCode: 400,
+      });
+    }
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "Invalid Id",
+        statusCode: 400,
+      });
+    }
+
+    const post = await Post.findOne({
+      _id: id,
+    });
+
+    if (!post) {
+      return res.status(404).send({
+        success: false,
+        data: {},
+        message: "No post with that id found",
+        statusCode: 404,
+      });
+    }
+
+    const upVoters = post.upVoters.map((v) => v._id);
+    const downVoters = post.downVoters.map((v) => v._id);
+
+    const user = await User.findOne({ _id: req.user._id });
+    let vote = "";
+
+    // check if user already in upVoters, if true then remove
+    if (upVoters.filter((v) => _.isEqual(v._id, user._id)).length > 0) {
+      await Post.updateOne(
+        { _id: post._id },
+        { $pull: { upVoters: { $in: [user._id] } } }
+      );
+      vote = "removed upVote";
+    }
+
+    // if already on downVoters, remove or add
+    if (downVoters.filter((v) => _.isEqual(v._id, user._id)).length > 0) {
+      vote = "removed downVote";
+      await Post.updateOne(
+        { _id: post._id },
+        { $pull: { downVoters: { $in: [user._id] } } }
+      );
+    } else {
+      vote = "downVoted";
+      await post.downVoters.push(user);
+      await post.save();
+    }
+
+    res.send({
+      success: true,
+      data: {},
+      message: `Post with the id ${post._id} ${vote} successfully`,
+      statusCode: 200,
+    });
+  } catch {
+    res.status(500).send({
+      success: false,
+      data: {},
+      message: "Oops, something went wrong!",
+      statusCode: 500,
+    });
+  }
+};

@@ -8,7 +8,7 @@ interface Props {
 const ErrorPostCard = ({ error }: Props) => {
   let text = "";
 
-  switch (error.response.status) {
+  switch (error?.response?.status) {
     case 400:
       text = "Bad Request: 400";
       break;
