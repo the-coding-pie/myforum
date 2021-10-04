@@ -31,10 +31,10 @@ const authSlice = createSlice({
     loginUser: (state, action: PayloadAction<Tokens>) => {
       const { access_token, refresh_token } = action.payload;
 
-      saveTokens(access_token, refresh_token);
-
       state.accessToken = access_token;
       state.refreshToken = refresh_token;
+
+      saveTokens(access_token, refresh_token);
     },
     logoutUser: (state) => {
       removeTokens();
@@ -47,9 +47,9 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ access_token: string }>
     ) => {
-      saveAccessTokens(action.payload.access_token);
-
       state.accessToken = action.payload.access_token;
+
+      saveAccessTokens(action.payload.access_token);
     },
     setCurrentUser: (state, action: PayloadAction<UserObj>) => {
       state.user = action.payload;

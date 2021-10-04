@@ -13,7 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addToast } from "./features/toastSlice";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const theme: DefaultTheme = {
   fonts: {
@@ -50,13 +50,14 @@ axios.interceptors.response.use(
       !originalRequest.url.includes("login")
     ) {
       isFirst = false;
-
+      
       // try to get a new access_token
       return axios
         .post(`${BASE_URL}/auth/refresh`, {
           refresh_token: store.getState().auth.refreshToken,
         })
         .then((response) => {
+
           // get the access_token
           const { access_token } = response.data.data;
 
@@ -73,7 +74,7 @@ axios.interceptors.response.use(
 
           // retry the original request
           return axios(originalRequest);
-        });
+        })
     }
 
     // if error === 401, then do the following, or reject Promise

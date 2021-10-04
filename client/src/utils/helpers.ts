@@ -34,12 +34,9 @@ export const checkTokens = (): boolean => {
 
       // if no exp date or expired exp date
       if (!exp || exp < new Date().getTime() / 1000) {
-        console.log("n");
         return false;
       }
     }
-
-    console.log("y");
     // valid token
     return true;
   } catch (e) {

@@ -32,6 +32,7 @@ const PostCard = ({
   const { pathname } = useLocation();
   const params = useParams<any>();
   const history = useHistory();
+
   const { accessToken, refreshToken, user } = useSelector(
     (state: RootState) => state.auth
   );
@@ -131,6 +132,7 @@ const PostCard = ({
           {},
           {
             headers: {
+              ContentType: "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
           }
@@ -156,7 +158,7 @@ const PostCard = ({
           }
 
           if (pathname.includes("/posts")) {
-            history.push("/");
+            queryClient.invalidateQueries(`getSinglePost/${_id}`);
           }
         })
         .catch(({ response }) => {
@@ -206,6 +208,7 @@ const PostCard = ({
           {},
           {
             headers: {
+              ContentType: "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
           }
@@ -231,7 +234,7 @@ const PostCard = ({
           }
 
           if (pathname.includes("/posts")) {
-            history.push("/");
+            queryClient.invalidateQueries(`getSinglePost/${_id}`);
           }
         })
         .catch(({ response }) => {

@@ -91,6 +91,7 @@ const AboutCard = ({ name }: Props) => {
         {},
         {
           headers: {
+            ContentType: "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         }

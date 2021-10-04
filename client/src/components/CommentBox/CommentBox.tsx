@@ -7,7 +7,7 @@ import { addToast } from "../../features/toastSlice";
 import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
 import { Button } from "../shared/Button.style";
 import { CommentBoxWrapper } from "./CommentBox.style";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   postId: string;
@@ -31,6 +31,7 @@ const CommentBox = ({ postId }: Props) => {
         },
         {
           headers: {
+            ContentType: "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         }
