@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, useHistory, Link } from "react-router-dom";
 import { RootState } from "../../app/store";
@@ -40,239 +39,232 @@ const PostCard = ({
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
-  const handleDelete = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
 
-      axios
-        .delete(`${BASE_URL}/posts/${_id}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          const msg = response.data.message;
+    axios
+      .delete(`${BASE_URL}/posts/${_id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        const msg = response.data.message;
 
+        dispatch(
+          addToast({
+            id: uuidv4(),
+            kind: SUCCESS,
+            msg,
+          })
+        );
+
+        // act accordingly
+        // if / or /u/:username or /c/:name or /search -> refetch
+        // if /posts/:id, redirect
+        if (pathname.includes("/u")) {
+          queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+        }
+
+        if (pathname === "/") {
+          queryClient.invalidateQueries("getPosts");
+        }
+
+        if (pathname.includes("/search")) {
+          queryClient.invalidateQueries(`search`);
+        }
+
+        if (pathname.includes("/c/")) {
+          queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+        }
+
+        if (pathname.includes("/posts")) {
+          history.push("/");
+        }
+      })
+      .catch(({ response }) => {
+        try {
+          switch (response.status) {
+            case 400:
+            case 403:
+            case 404:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: response.data.message,
+                })
+              );
+              break;
+            default:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: "Oops, something went wrong!",
+                })
+              );
+              break;
+          }
+        } catch (e) {
           dispatch(
             addToast({
               id: uuidv4(),
-              kind: SUCCESS,
-              msg,
+              kind: ERROR,
+              msg: "Oops, something went wrong!",
             })
           );
+        }
+      });
+  };
 
-          // act accordingly
-          // if / or /u/:username or /c/:name or /search -> refetch
-          // if /posts/:id, redirect
-          if (pathname.includes("/u")) {
-            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
-          }
+  const handleUpvote = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
 
-          if (pathname === "/") {
-            queryClient.invalidateQueries("getPosts");
-          }
+    axios
+      .post(
+        `${BASE_URL}/posts/${_id}/upvote`,
+        {},
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        // act accordingly
+        // if / or /u/:username or /c/:name or /search -> refetch
+        // if /posts/:id, redirect
+        if (pathname.includes("/u")) {
+          queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+        }
 
-          if (pathname.includes("/search")) {
-            queryClient.invalidateQueries(`search`);
-          }
+        if (pathname === "/") {
+          queryClient.invalidateQueries("getPosts");
+        }
 
-          if (pathname.includes("/c/")) {
-            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
-          }
+        if (pathname.includes("/search")) {
+          queryClient.invalidateQueries(`search`);
+        }
 
-          if (pathname.includes("/posts")) {
-            history.push("/");
-          }
-        })
-        .catch(({ response }) => {
-          try {
-            switch (response.status) {
-              case 400:
-              case 403:
-              case 404:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: response.data.message,
-                  })
-                );
-                break;
-              default:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: "Oops, something went wrong! Try reload...",
-                  })
-                );
-                break;
-            }
-          } catch (e) {
-            dispatch(
-              addToast({
-                id: uuidv4(),
-                kind: ERROR,
-                msg: "Oops, something went wrong!",
-              })
-            );
-          }
-        });
-    },
-    []
-  );
+        if (pathname.includes("/c/")) {
+          queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+        }
 
-  const handleUpvote = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
+        if (pathname.includes("/posts")) {
+          queryClient.invalidateQueries(`getSinglePost/${_id}`);
+        }
+      })
+      .catch(({ response }) => {
+        try {
+          switch (response.status) {
+            case 400:
+            case 404:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: response.data.message,
+                })
+              );
+              break;
+            default:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: "Oops, something went wrong!",
+                })
+              );
+              break;
+          }
+        } catch (e) {
+          dispatch(
+            addToast({
+              id: uuidv4(),
+              kind: ERROR,
+              msg: "Oops, something went wrong!",
+            })
+          );
+        }
+      });
+  };
 
-      axios
-        .post(
-          `${BASE_URL}/posts/${_id}/upvote`,
-          {},
-          {
-            headers: {
-              ContentType: "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        )
-        .then((response) => {
-          // act accordingly
-          // if / or /u/:username or /c/:name or /search -> refetch
-          // if /posts/:id, redirect
-          if (pathname.includes("/u")) {
-            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
-          }
+  const handleDownVote = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
 
-          if (pathname === "/") {
-            queryClient.invalidateQueries("getPosts");
-          }
+    axios
+      .post(
+        `${BASE_URL}/posts/${_id}/downvote`,
+        {},
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        // act accordingly
+        // if / or /u/:username or /c/:name or /search -> refetch
+        // if /posts/:id, redirect
+        if (pathname.includes("/u")) {
+          queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
+        }
 
-          if (pathname.includes("/search")) {
-            queryClient.invalidateQueries(`search`);
-          }
+        if (pathname === "/") {
+          queryClient.invalidateQueries("getPosts");
+        }
 
-          if (pathname.includes("/c/")) {
-            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
-          }
+        if (pathname.includes("/search")) {
+          queryClient.invalidateQueries(`search`);
+        }
 
-          if (pathname.includes("/posts")) {
-            queryClient.invalidateQueries(`getSinglePost/${_id}`);
-          }
-        })
-        .catch(({ response }) => {
-          try {
-            switch (response.status) {
-              case 400:
-              case 404:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: response.data.message,
-                  })
-                );
-                break;
-              default:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: "Oops, something went wrong! Try reload...",
-                  })
-                );
-                break;
-            }
-          } catch (e) {
-            dispatch(
-              addToast({
-                id: uuidv4(),
-                kind: ERROR,
-                msg: "Oops, something went wrong!",
-              })
-            );
-          }
-        });
-    },
-    []
-  );
+        if (pathname.includes("/c/")) {
+          queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
+        }
 
-  const handleDownVote = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-
-      axios
-        .post(
-          `${BASE_URL}/posts/${_id}/downvote`,
-          {},
-          {
-            headers: {
-              ContentType: "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
+        if (pathname.includes("/posts")) {
+          queryClient.invalidateQueries(`getSinglePost/${_id}`);
+        }
+      })
+      .catch(({ response }) => {
+        try {
+          switch (response.status) {
+            case 400:
+            case 404:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: response.data.message,
+                })
+              );
+              break;
+            default:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: "Oops, something went wrong!",
+                })
+              );
+              break;
           }
-        )
-        .then((response) => {
-          // act accordingly
-          // if / or /u/:username or /c/:name or /search -> refetch
-          // if /posts/:id, redirect
-          if (pathname.includes("/u")) {
-            queryClient.invalidateQueries(`getUsersPosts/${params.username}`);
-          }
-
-          if (pathname === "/") {
-            queryClient.invalidateQueries("getPosts");
-          }
-
-          if (pathname.includes("/search")) {
-            queryClient.invalidateQueries(`search`);
-          }
-
-          if (pathname.includes("/c/")) {
-            queryClient.invalidateQueries(`getCommunityPosts/${params.name}`);
-          }
-
-          if (pathname.includes("/posts")) {
-            queryClient.invalidateQueries(`getSinglePost/${_id}`);
-          }
-        })
-        .catch(({ response }) => {
-          try {
-            switch (response.status) {
-              case 400:
-              case 404:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: response.data.message,
-                  })
-                );
-                break;
-              default:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: "Oops, something went wrong! Try reload...",
-                  })
-                );
-                break;
-            }
-          } catch (e) {
-            dispatch(
-              addToast({
-                id: uuidv4(),
-                kind: ERROR,
-                msg: "Oops, something went wrong!",
-              })
-            );
-          }
-        });
-    },
-    []
-  );
+        } catch (e) {
+          dispatch(
+            addToast({
+              id: uuidv4(),
+              kind: ERROR,
+              msg: "Oops, something went wrong!",
+            })
+          );
+        }
+      });
+  };
 
   return (
     <PostCardWrapper>

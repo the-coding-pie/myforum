@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ErrorBox from "../components/ErrorBox/ErrorBox";
 import AuthLayout from "../components/layouts/AuthLayout/AuthLayout";
 import { BottomText } from "../components/shared/BottomText.style";
@@ -28,7 +28,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const login = useCallback((inputs: { email: string; password: string }) => {
+  const login = (inputs: { email: string; password: string }) => {
     axios
       .post(
         `${BASE_URL}/auth/login`,
@@ -89,7 +89,7 @@ const Login = () => {
           });
         }
       });
-  }, []);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prevValue) => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToast } from "../../features/toastSlice";
 import { BASE_URL, ERROR, SUCCESS } from "../../types/constants";
@@ -44,7 +44,7 @@ const CreatePostBox = () => {
   const dispatch = useDispatch();
 
   // fn to fetch all communities
-  const getCommunities = useCallback(() => {
+  const getCommunities = () => {
     axios
       .get(`${BASE_URL}/communities`)
       .then((response) => {
@@ -66,7 +66,7 @@ const CreatePostBox = () => {
                 addToast({
                   id: uuidv4(),
                   kind: ERROR,
-                  msg: "Oops, something went wrong! Try reload...",
+                  msg: "Oops, something went wrong!",
                 })
               );
               break;
@@ -81,9 +81,14 @@ const CreatePostBox = () => {
           );
         }
       });
-  }, []);
+  };
 
-  const createPost = useCallback((post) => {
+  const createPost = (post: {
+    title: string;
+    content: string;
+    kind: string;
+    community: string;
+  }) => {
     axios
       .post(`${BASE_URL}/posts`, post, {
         headers: {
@@ -134,7 +139,7 @@ const CreatePostBox = () => {
                 addToast({
                   id: uuidv4(),
                   kind: ERROR,
-                  msg: "Oops, something went wrong! Try reload...",
+                  msg: "Oops, something went wrong!",
                 })
               );
               break;
@@ -149,7 +154,7 @@ const CreatePostBox = () => {
           );
         }
       });
-  }, []);
+  };
 
   // handle input changes
   const handleChange = (

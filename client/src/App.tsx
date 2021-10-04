@@ -43,21 +43,24 @@ axios.interceptors.response.use(
   function (error) {
     const originalRequest = error.config;
     // try to refresh the token for one time and it is not login route
+    
+    // isFirst -> for invalid refreshToken response handling
+    // originalRequest._retry -> for invalid accessToken response handling
 
     if (
       isFirst &&
       error.response.status === 401 &&
-      !originalRequest.url.includes("login")
+      !originalRequest.url.includes("login") &&
+      !originalRequest._retry
     ) {
       isFirst = false;
-      
+
       // try to get a new access_token
       return axios
         .post(`${BASE_URL}/auth/refresh`, {
           refresh_token: store.getState().auth.refreshToken,
         })
         .then((response) => {
-
           // get the access_token
           const { access_token } = response.data.data;
 
@@ -71,10 +74,11 @@ axios.interceptors.response.use(
 
           // user can again request for refresh_token
           isFirst = true;
+          originalRequest._retry = true;
 
           // retry the original request
           return axios(originalRequest);
-        })
+        });
     }
 
     // if error === 401, then do the following, or reject Promise

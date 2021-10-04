@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ErrorBox from "../components/ErrorBox/ErrorBox";
 import AuthLayout from "../components/layouts/AuthLayout/AuthLayout";
@@ -29,66 +29,67 @@ const Signup = () => {
     common: "",
   });
 
-  const registerUser = useCallback(
-    (inputs: { username: string; email: string; password: string }) => {
-      axios
-        .post(
-          `${BASE_URL}/auth/register`,
-          {
-            username: inputs.username.trim(),
-            email: inputs.email.trim(),
-            password: inputs.password.trim(),
+  const registerUser = (inputs: {
+    username: string;
+    email: string;
+    password: string;
+  }) => {
+    axios
+      .post(
+        `${BASE_URL}/auth/register`,
+        {
+          username: inputs.username.trim(),
+          email: inputs.email.trim(),
+          password: inputs.password.trim(),
+        },
+        {
+          headers: {
+            ContentType: "application/json",
           },
-          {
-            headers: {
-              ContentType: "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          // empty errors
-          setErrors({ username: "", email: "", password: "", common: "" });
-          setInputs({ username: "", email: "", password: "" });
+        }
+      )
+      .then((response) => {
+        // empty errors
+        setErrors({ username: "", email: "", password: "", common: "" });
+        setInputs({ username: "", email: "", password: "" });
 
-          // redirect to /login
-          history.push("/login");
-        })
-        .catch(({ response }) => {
-          try {
-            const data = response.data;
+        // redirect to /login
+        history.push("/login");
+      })
+      .catch(({ response }) => {
+        try {
+          const data = response.data;
 
-            switch (response.status) {
-              // bad request or Invalid format or conflict
-              case 400:
-              case 409:
-                setErrors((prevValue) => {
-                  return {
-                    ...prevValue,
-                    common: data.message,
-                  };
-                });
-                break;
-              default:
-                setErrors((prevValue) => {
-                  return {
-                    ...prevValue,
-                    common: "Oops, something went wrong",
-                  };
-                });
-                break;
-            }
-          } catch (e) {
-            setErrors((prevValue) => {
-              return {
-                ...prevValue,
-                common: "Oops, something went wrong",
-              };
-            });
+          switch (response.status) {
+            // bad request or Invalid format or conflict
+            case 400:
+            case 409:
+              setErrors((prevValue) => {
+                return {
+                  ...prevValue,
+                  common: data.message,
+                };
+              });
+              break;
+            default:
+              setErrors((prevValue) => {
+                return {
+                  ...prevValue,
+                  common: "Oops, something went wrong",
+                };
+              });
+              break;
           }
-        });
-    },
-    []
-  );
+        } catch (e) {
+          setErrors((prevValue) => {
+            return {
+              ...prevValue,
+              common: "Oops, something went wrong",
+            };
+          });
+        }
+      });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prevValue) => {

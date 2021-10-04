@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback } from "react";
+import React from "react";
 import { useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -28,67 +28,64 @@ const CommentCard = ({
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
-  const handleDelete = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
 
-      axios
-        .delete(`${BASE_URL}/comments/${_id}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          const msg = response.data.message;
+    axios
+      .delete(`${BASE_URL}/comments/${_id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        const msg = response.data.message;
 
+        dispatch(
+          addToast({
+            id: uuidv4(),
+            kind: SUCCESS,
+            msg,
+          })
+        );
+
+        queryClient.invalidateQueries(`getComments/${postId}`);
+        queryClient.invalidateQueries(`getSinglePost/${postId}`);
+      })
+      .catch(({ response }) => {
+        try {
+          switch (response.status) {
+            case 400:
+            case 403:
+            case 404:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: response.data.message,
+                })
+              );
+              break;
+            default:
+              dispatch(
+                addToast({
+                  id: uuidv4(),
+                  kind: ERROR,
+                  msg: "Oops, something went wrong!",
+                })
+              );
+              break;
+          }
+        } catch (e) {
           dispatch(
             addToast({
               id: uuidv4(),
-              kind: SUCCESS,
-              msg,
+              kind: ERROR,
+              msg: "Oops, something went wrong!",
             })
           );
-
-          queryClient.invalidateQueries(`getComments/${postId}`);
-          queryClient.invalidateQueries(`getSinglePost/${postId}`);
-        })
-        .catch(({ response }) => {
-          try {
-            switch (response.status) {
-              case 400:
-              case 403:
-              case 404:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: response.data.message,
-                  })
-                );
-                break;
-              default:
-                dispatch(
-                  addToast({
-                    id: uuidv4(),
-                    kind: ERROR,
-                    msg: "Oops, something went wrong! Try reload...",
-                  })
-                );
-                break;
-            }
-          } catch (e) {
-            dispatch(
-              addToast({
-                id: uuidv4(),
-                kind: ERROR,
-                msg: "Oops, something went wrong!",
-              })
-            );
-          }
-        });
-    },
-    []
-  );
+        }
+      });
+  };
 
   return (
     <CommentCardWrapper>

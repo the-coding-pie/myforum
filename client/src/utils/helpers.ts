@@ -45,7 +45,7 @@ export const checkTokens = (): boolean => {
 };
 
 export const getTokens = () => {
-  // check if the user has a valid refresh_token or a access_token
+  // check if the user has a valid or a access_token refresh_token
   if (checkTokens()) {
     return {
       access_token: localStorage.getItem("access_token"),

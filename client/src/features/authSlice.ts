@@ -28,6 +28,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    emptyRefreshToken: (state) => {
+      state.accessToken = null;
+    },
     loginUser: (state, action: PayloadAction<Tokens>) => {
       const { access_token, refresh_token } = action.payload;
 
@@ -58,7 +61,7 @@ const authSlice = createSlice({
 });
 
 // action creators
-export const { loginUser, logoutUser, setAccessToken, setCurrentUser } =
+export const { loginUser, emptyRefreshToken, logoutUser, setAccessToken, setCurrentUser } =
   authSlice.actions;
 
 // reducer

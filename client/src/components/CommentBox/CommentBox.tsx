@@ -71,7 +71,7 @@ const CommentBox = ({ postId }: Props) => {
                 addToast({
                   id: uuidv4(),
                   kind: ERROR,
-                  msg: "Oops, something went wrong! Try reload...",
+                  msg: "Oops, something went wrong!",
                 })
               );
               break;
