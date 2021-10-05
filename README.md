@@ -35,14 +35,14 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  
  ## How to setup locally on your computer
  
- ## Prerequisites
+ ### Prerequisites
  
  In order to run this project on your computer, you must have the following technologies installed on your computer:
  
   - Node JS and npm/yarn
   - MongoDB
   
-## Steps
+ ### Steps
 
 1. `git clone` or `Download ZIP` this repo `https://github.com/the-coding-pie/myforum.git`
 2. Install server dependencies
