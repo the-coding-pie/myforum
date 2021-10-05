@@ -4,8 +4,10 @@ A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB
 
 To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/).
 
+
 <img src="https://user-images.githubusercontent.com/63698375/136052576-da7d1594-1876-42a3-be2d-cfb089677849.png" alt="homeFeed" style="width:100%;"/>
  
+
 ## Technologies Used:
 
  ### Frontend
