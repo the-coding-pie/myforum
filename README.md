@@ -5,8 +5,8 @@ A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB
 To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/).
 
 <div style="display:flex;">
-<img src="https://user-images.githubusercontent.com/63698375/136052584-3ceb9f1d-bd28-4c6e-96b3-91dd4ebbdb4b.png" alt="signup" style="width:50%;"/>
-<img src="https://user-images.githubusercontent.com/63698375/136052597-5cec8ce7-954c-455f-9869-e31f1a183d33.png" alt="login" style="width:50%;"/>
+<img src="https://user-images.githubusercontent.com/63698375/136052584-3ceb9f1d-bd28-4c6e-96b3-91dd4ebbdb4b.png" alt="signup"/>
+<img src="https://user-images.githubusercontent.com/63698375/136052597-5cec8ce7-954c-455f-9869-e31f1a183d33.png" alt="login"/>
 </div>
 <img src="https://user-images.githubusercontent.com/63698375/136052576-da7d1594-1876-42a3-be2d-cfb089677849.png" alt="homeFeed" style="width:50%;"/>
 <img src="https://user-images.githubusercontent.com/63698375/136052552-575c2088-b52b-4542-ba78-13e23cd9ca4d.png" alt="addPost" style="width:50%;"/>
