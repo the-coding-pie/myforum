@@ -429,7 +429,7 @@ export const createPost = async (req, res) => {
     // create a new post
     const newPost = await Post({
       title: validator.escape(title),
-      content: validator.escape(content),
+      content: kind === "url" ? content : validator.escape(content),
       kind,
       community: foundCommunity,
       author: req.user._id,
