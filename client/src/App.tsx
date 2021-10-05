@@ -49,7 +49,7 @@ axios.interceptors.response.use(
 
     if (
       isFirst &&
-      error.response.status === 401 &&
+      error?.response?.status === 401 &&
       !originalRequest.url.includes("login") &&
       !originalRequest._retry
     ) {
@@ -83,7 +83,7 @@ axios.interceptors.response.use(
 
     // if error === 401, then do the following, or reject Promise
     if (
-      error.response.status === 401 &&
+      error?.response?.status === 401 &&
       !originalRequest.url.includes("login")
     ) {
       store.dispatch(

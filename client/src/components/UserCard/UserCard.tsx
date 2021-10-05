@@ -38,7 +38,7 @@ const UserCard = ({ username }: Props) => {
   if (error) {
     let text = "";
 
-    switch (error.response.status) {
+    switch (error?.response?.status) {
       case 400:
         text = "Bad Request: 400";
         break;
