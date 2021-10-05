@@ -40,11 +40,11 @@ const authSlice = createSlice({
       saveTokens(access_token, refresh_token);
     },
     logoutUser: (state) => {
-      removeTokens();
-
       state.accessToken = null;
       state.refreshToken = null;
       state.user = null;
+
+      removeTokens();
     },
     setAccessToken: (
       state,
@@ -61,8 +61,13 @@ const authSlice = createSlice({
 });
 
 // action creators
-export const { loginUser, emptyRefreshToken, logoutUser, setAccessToken, setCurrentUser } =
-  authSlice.actions;
+export const {
+  loginUser,
+  emptyRefreshToken,
+  logoutUser,
+  setAccessToken,
+  setCurrentUser,
+} = authSlice.actions;
 
 // reducer
 export default authSlice.reducer;
