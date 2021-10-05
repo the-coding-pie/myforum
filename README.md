@@ -1,6 +1,6 @@
 # MyForum
 
-A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB.
+A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB (MERN).
 
 To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/).
 
