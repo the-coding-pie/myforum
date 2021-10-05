@@ -1,4 +1,4 @@
-# myforum
+# MyForum
 
 A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB.
 
@@ -54,7 +54,7 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
 
 3. Install client dependencies
 
-```
+```bash
  cd client
  yarn install
 ```
@@ -62,19 +62,19 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
 4. Start MongoDB on your computer
 
 ```bash
- $mongod
+ $ mongod
 ```
 
 5. Start the server
 
-```
+```bash
  cd server
  yarn start
 ```
 
 6. Start the client
 
-```
+```bash
  cd client
  yarn start
 ```
