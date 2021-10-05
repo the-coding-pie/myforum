@@ -15,7 +15,7 @@ export interface Post {
   _id: string;
   title: string;
   content: string;
-  kind: "text" | "link";
+  kind: "text" | "url";
   community: {
     _id: string;
     name: string;

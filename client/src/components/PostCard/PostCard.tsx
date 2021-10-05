@@ -23,6 +23,7 @@ const PostCard = ({
   comments,
   community,
   upVoters,
+  kind,
   downVoters,
   author,
   postedAt,
@@ -331,7 +332,23 @@ const PostCard = ({
           )}
         </div>
 
-        <p>{content.length > 20 ? content.slice(0, 20) + "..." : content}</p>
+        <p>
+          {content.length > 20 && !pathname.includes("/posts") ? (
+            kind === "url" ? (
+              <a href={content} target="_blank">
+                {content.slice(0, 20) + "..."}
+              </a>
+            ) : (
+              content.slice(0, 20) + "..."
+            )
+          ) : kind === "url" ? (
+            <a href={content} target="_blank">
+              {content}
+            </a>
+          ) : (
+            content
+          )}
+        </p>
 
         <PostCardBottom>
           <span className="comments">
