@@ -2,7 +2,7 @@
 
 A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB.
 
-To see the live version, [check here](https://615c46c72a06670008b86004--pedantic-boyd-c3250f.netlify.app/search/?q=s).
+To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/).
 
 ## Technologies Used:
 
@@ -47,7 +47,7 @@ To see the live version, [check here](https://615c46c72a06670008b86004--pedantic
 1. `git clone` or `Download ZIP` this repo `https://github.com/the-coding-pie/myforum.git`
 2. Install server dependencies
 
-```
+```bash
  cd server
  yarn install
 ```
@@ -61,7 +61,7 @@ To see the live version, [check here](https://615c46c72a06670008b86004--pedantic
 
 4. Start MongoDB on your computer
 
-```
+```bash
  $mongod
 ```
 
