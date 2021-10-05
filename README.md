@@ -4,6 +4,14 @@ A fullstack reddit clone made using Node JS, React JS + Typescript, and Mongo DB
 
 To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/).
 
+![login](https://user-images.githubusercontent.com/63698375/136052584-3ceb9f1d-bd28-4c6e-96b3-91dd4ebbdb4b.png)
+![signup](https://user-images.githubusercontent.com/63698375/136052597-5cec8ce7-954c-455f-9869-e31f1a183d33.png)
+![homefeed](https://user-images.githubusercontent.com/63698375/136052576-da7d1594-1876-42a3-be2d-cfb089677849.png)
+![addPost](https://user-images.githubusercontent.com/63698375/136052552-575c2088-b52b-4542-ba78-13e23cd9ca4d.png)
+![comment](https://user-images.githubusercontent.com/63698375/136052567-a48739da-831b-4047-8566-26cd5015c505.png)
+![community](https://user-images.githubusercontent.com/63698375/136052573-d8993267-81b2-4d6b-8824-4d9a1dc4a7f2.png)
+![search](https://user-images.githubusercontent.com/63698375/136052593-8d98b9d4-7741-4eb5-92bb-56b552fbece5.png)
+
 ## Technologies Used:
 
  ### Frontend
@@ -59,7 +67,7 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  yarn install
 ```
 
-4. Start MongoDB on your computer
+4. Start MongoDB on your computer (on a new Terminal)
 
 ```bash
  $ mongod
@@ -81,3 +89,5 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
 
 7. Visit [http://localhost:3000](http://localhost:3000)
 
+
+[Designed](https://www.figma.com/file/H83ab92IU8VZoRIeJ6yzJf/MyForum?node-id=0%3A1) and developed with ❤️ by [@AK](https://twitter.com/aravind_k28) (that's me ;)
