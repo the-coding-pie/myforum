@@ -69,21 +69,32 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  $ mongod
 ```
 
-5. Start the server
+5. Create `.env` file directly inside `server` folder and add these values:
+
+```
+PORT=8000
+
+MONGO_URI=your_value_here
+
+ACCESS_TOKEN_SECRET=some_random_value_here
+REFRESH_TOKEN_SECRET=some_random_value_here
+```
+
+6. Start the server
 
 ```bash
  cd server
  yarn start
 ```
 
-6. Start the client
+7. Start the client
 
 ```bash
  cd client
  yarn start
 ```
 
-7. Visit [http://localhost:3000](http://localhost:3000)
+8. Visit [http://localhost:3000](http://localhost:3000)
 
 
 [Designed](https://www.figma.com/file/H83ab92IU8VZoRIeJ6yzJf/MyForum?node-id=0%3A1) and developed with ❤️ by [@AK](https://twitter.com/aravind_k28) (that's me ;)
