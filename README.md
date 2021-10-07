@@ -49,7 +49,7 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  ### Steps
 
 1. `git clone` or `Download ZIP` this repo `https://github.com/the-coding-pie/myforum.git`
-2. Now cd into the root directory (ie, myforum): 
+2. Now `cd` into the root directory (ie, myforum): 
  
 ``` 
 cd myforum
