@@ -63,10 +63,10 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  yarn install
 ```
 
-4. Start MongoDB on your computer (on a new Terminal)
+4. Start MongoDB on your computer (on a new Terminal type the following)
 
 ```bash
- $ mongod
+ mongod
 ```
 
 5. Create `.env` file directly inside `server` folder and add these values:
