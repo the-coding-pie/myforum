@@ -51,7 +51,9 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
 1. `git clone` or `Download ZIP` this repo `https://github.com/the-coding-pie/myforum.git`
 2. Now cd into the root folder (myforum): 
  
-``` cd myforum ```
+``` 
+cd myforum
+```
 
 3. Install server dependencies
 
