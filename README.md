@@ -49,27 +49,28 @@ To see the live version, [check here](https://pedantic-boyd-c3250f.netlify.app/)
  ### Steps
 
 1. `git clone` or `Download ZIP` this repo `https://github.com/the-coding-pie/myforum.git`
-2. Install server dependencies
+2. Now, `cd myforum`
+3. Install server dependencies
 
 ```bash
  cd server
  yarn install
 ```
 
-3. Install client dependencies
+4. Install client dependencies
 
 ```bash
  cd client
  yarn install
 ```
 
-4. Start MongoDB on your computer (on a new Terminal type the following)
+5. Start MongoDB on your computer (on a new Terminal type the following)
 
 ```bash
  mongod
 ```
 
-5. Create `.env` file directly inside `server` folder and add these values:
+6. Create `.env` file directly inside `server` folder and add these values:
 
 ```
 PORT=8000
@@ -80,21 +81,21 @@ ACCESS_TOKEN_SECRET=some_random_value_here
 REFRESH_TOKEN_SECRET=some_random_value_here
 ```
 
-6. Start the server
+7. Start the server
 
 ```bash
  cd server
  yarn start
 ```
 
-7. Start the client
+8. Start the client
 
 ```bash
  cd client
  yarn start
 ```
 
-8. Visit [http://localhost:3000](http://localhost:3000)
+9. Visit [http://localhost:3000](http://localhost:3000)
 
 
 [Designed](https://www.figma.com/file/H83ab92IU8VZoRIeJ6yzJf/MyForum?node-id=0%3A1) and developed with ❤️ by [@AK](https://twitter.com/aravind_k28) (that's me ;)
