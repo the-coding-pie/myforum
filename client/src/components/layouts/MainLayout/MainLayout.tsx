@@ -59,7 +59,7 @@ const MainLayout = () => {
     if (refreshToken || accessToken) {
       getCurrentUser();
     }
-  }, []);
+  }, [accessToken]);
 
   return <DefaultLayout />;
 };

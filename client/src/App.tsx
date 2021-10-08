@@ -43,7 +43,7 @@ axios.interceptors.response.use(
   function (error) {
     const originalRequest = error.config;
     // try to refresh the token for one time and it is not login route
-    
+
     // isFirst -> for invalid refreshToken response handling
     // originalRequest._retry -> for invalid accessToken response handling
 
@@ -78,11 +78,25 @@ axios.interceptors.response.use(
 
           // retry the original request
           return axios(originalRequest);
+        })
+        .catch((error) => {
+          if (error?.response?.status === 401) {
+            store.dispatch(
+              addToast({
+                id: uuidv4(),
+                kind: ERROR,
+                msg: "Token expired!",
+              })
+            );
+            store.dispatch(logoutUser());
+          }
+          return Promise.reject(error);
         });
     }
 
     // if error === 401, then do the following, or reject Promise
     if (
+      isFirst &&
       error?.response?.status === 401 &&
       !originalRequest.url.includes("login")
     ) {
